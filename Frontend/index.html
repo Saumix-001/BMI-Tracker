@@ -171,6 +171,7 @@ tr:hover td { background-color: #f8fafc; color: #000; }
 
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
 </head>
 <body>
     <div class="bg-blob blob-1"></div>
@@ -198,71 +199,76 @@ tr:hover td { background-color: #f8fafc; color: #000; }
             <button class="logout-btn" onclick="handleLogout()">Logout</button>
         </div>
 
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h4>Total Entries</h4>
-                <div id="statTotal" class="stat-value">0</div>
-            </div>
-            <div class="stat-card">
-                <h4>Average BMI</h4>
-                <div id="statAvgBmi" class="stat-value">0.0</div>
-            </div>
-            <div class="stat-card">
-                <h4>Latest Status</h4>
-                <div id="statStatus" class="stat-value">-</div>
-            </div>
-        </div>
-
-        <div class="chart-container">
-            <canvas id="bmiChart"></canvas>
-        </div>
-
-        <div class="container">
-            <div class="box">
-                <h2>Add Health Record</h2>
-                <form id="healthForm" class="slide-in-left">
-                    <label>Roll Number:</label>
-                    <input type="number" id="rollNo" required min="1">
-                    
-                    <label>Full Name:</label>
-                    <input type="text" id="name" required minlength="1">
-                    
-                    <label>Weight (kg):</label>
-                    <input type="number" id="weight" step="0.1" required min="0.1">
-                    
-                    <label>Height (cm):</label>
-                    <input type="number" id="height" step="0.1" required min="0.1">
-                    
-                    <button type="submit">Calculate & Save</button>
-                </form>
-                <div id="formStatus" class="status-msg"></div>
-            </div>
-
-            <div class="box slide-in-right" style="flex: 1.5;">
-                <h2>Your Health History</h2>
-                <div class="search-group">
-                    <input type="date" id="searchDate">
-                    <button type="button" onclick="searchRecordsByDate()">Search</button>
-                    <button type="button" onclick="clearDateSearch()" style="background-color: #7f8c8d;">Clear</button>
+        <div class="dashboard-layout">
+            
+            <div class="left-panel">
+                <div class="box slide-in-left">
+                    <h2>Add Health Record</h2>
+                    <form id="healthForm">
+                        <label>Roll Number:</label>
+                        <input type="number" id="rollNo" required min="1">
+                        
+                        <label>Full Name:</label>
+                        <input type="text" id="name" required minlength="1">
+                        
+                        <label>Weight (kg):</label>
+                        <input type="number" id="weight" step="0.1" required min="0.1">
+                        
+                        <label>Height (cm):</label>
+                        <input type="number" id="height" step="0.1" required min="0.1">
+                        
+                        <button type="submit">Calculate & Save</button>
+                    </form>
+                    <div id="formStatus" class="status-msg"></div>
                 </div>
-                <div id="searchMessage" style="color: #e74c3c; font-weight: bold; margin-top: 10px; font-size: 14px;"></div>
-
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Roll No</th>
-                            <th>Name</th>
-                            <th>BMI</th>
-                            <th>Category</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-                    <tbody id="recordsTableBody">
-                        </tbody>
-                </table>
             </div>
-        </div>
-    </div>
+
+            <div class="right-panel">
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h4>Total Entries</h4>
+                        <div id="statTotal" class="stat-value">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Average BMI</h4>
+                        <div id="statAvgBmi" class="stat-value">0.0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Latest Status</h4>
+                        <div id="statStatus" class="stat-value">-</div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="bmiChart"></canvas>
+                </div>
+
+                <div class="box slide-in-right">
+                    <h2>Your Health History</h2>
+                    <div class="search-group">
+                        <input type="date" id="searchDate">
+                        <button type="button" onclick="searchRecordsByDate()">Search</button>
+                        <button type="button" onclick="clearDateSearch()" style="background-color: #7f8c8d;">Clear</button>
+                    </div>
+                    <div id="searchMessage" style="color: #e74c3c; font-weight: bold; margin-top: 10px; font-size: 14px;"></div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Roll No</th>
+                                <th>Name</th>
+                                <th>BMI</th>
+                                <th>Category</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recordsTableBody">
+                            </tbody>
+                    </table>
+                </div>
+
+            </div> </div> </div>
     <script src="script.js"></script>
     <div id="toastContainer"></div>
 </body>

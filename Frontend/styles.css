@@ -347,3 +347,19 @@ html {
     animation-delay: 0.2s;
     opacity: 0;
 }
+
+/* --- 6. Master Dashboard Layout --- */
+.dashboard-layout {
+    display: grid;
+    grid-template-columns: 320px 1fr; /* Form gets 320px, everything else takes the rest */
+    gap: 2rem;
+    align-items: start;
+    width: 100%;
+}
+
+/* On smaller screens or laptops, it will automatically stack so it doesn't squish */
+@media (max-width: 960px) {
+    .dashboard-layout {
+        grid-template-columns: 1fr; 
+    }
+}
