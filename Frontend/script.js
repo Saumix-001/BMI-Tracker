@@ -1,4 +1,5 @@
 const API_BASE_URL = "http://127.0.0.1:8000";
+const API_PROD_URL = "https://bmi-tracker-production.up.railway.app"; // For future deployment
 let isLoginMode = true;
 
 // On initial page load, check if user is already logged in
@@ -41,7 +42,7 @@ document.getElementById("authForm").addEventListener("submit", async (e) => {
     const endpoint = isLoginMode ? "/login" : "/register";
     
     try {
-        const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+        const response = await fetch(`${API_PROD_URL}${endpoint}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password })
@@ -115,7 +116,7 @@ document.getElementById("healthForm").addEventListener("submit", async (e) => {
     };
 
     try {
-        const response = await fetch(`${API_BASE_URL}/records`, {
+        const response = await fetch(`${API_PROD_URL}/records`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)
@@ -142,7 +143,7 @@ document.getElementById("healthForm").addEventListener("submit", async (e) => {
 async function fetchUserRecords() {
     const currentUserId = sessionStorage.getItem("current_user_id");
     try {
-        const response = await fetch(`${API_BASE_URL}/records?user_id=${currentUserId}`);
+        const response = await fetch(`${API_PROD_URL}/records?user_id=${currentUserId}`);
         const records = await response.json();
         renderTable(records);
     } catch (err) {
@@ -166,7 +167,7 @@ async function searchRecordsByDate() {
     }
 
     try {
-        const response = await fetch(`${API_BASE_URL}/records/${searchDate}?user_id=${currentUserId}`);
+        const response = await fetch(`${API_PROD_URL}/records/${searchDate}?user_id=${currentUserId}`);
         const data = await response.json();
 
         if (response.ok) {
