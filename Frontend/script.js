@@ -1,5 +1,5 @@
 const API_BASE_URL = "http://127.0.0.1:8000";
-const API_PROD_URL = "https://bmi-tracker-production.up.railway.app"; // For future deployment
+const API_PROD_URL = "https://bmi-tracker-8deo.onrender.com"; // For future deployment
 let isLoginMode = true;
 
 // On initial page load, check if user is already logged in
