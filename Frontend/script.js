@@ -142,18 +142,18 @@ document.getElementById("healthForm").addEventListener("submit", async (e) => {
 
         const data = await response.json();
 
+        // --- NEW TOAST NOTIFICATION LOGIC GOES HERE ---
         if (response.ok) {
-            statusDiv.style.color = "green";
-            statusDiv.innerText = `Saved! BMI: ${data.bmi} (${data.category})`;
+            showToast(`Saved! BMI: ${data.bmi} (${data.category})`, "success");
             document.getElementById("healthForm").reset();
             fetchUserRecords();
         } else {
-            statusDiv.style.color = "red";
-            statusDiv.innerText = `Error: ${data.detail || "Submission failed"}`;
+            showToast(`Error: ${data.detail || "Submission failed"}`, "error");
         }
+        
     } catch (err) {
-        statusDiv.style.color = "red";
-        statusDiv.innerText = "Error: Cannot connect to backend server.";
+        // Also update the server error to use the toast!
+        showToast("Error: Cannot connect to backend server.", "error");
     }
 });
 
@@ -219,14 +219,16 @@ function clearDateSearch() {
 
 
 // --- MODIFICATION 3: PREMIUM TABLE SYSTEM WITH DYNAMIC CHIPS ---
+// --- MODIFICATION 3: PREMIUM TABLE SYSTEM WITH DYNAMIC CHIPS ---
 function renderTable(records) {
+    updatePremiumDashboard(records); 
     const tbody = document.getElementById("recordsTableBody");
     tbody.innerHTML = "";
 
     if (records.length === 0) {
-        // SMART FIX: Put a helpful message and a button right inside the empty table!
+        // Added the 'empty-state' class here
         tbody.innerHTML = `
-            <tr>
+            <tr class="empty-state">
                 <td colspan="5" style="text-align:center; padding: 40px;">
                     <div style="color: var(--text-muted); font-size: 16px; margin-bottom: 12px;">
                         🔍 No health records found for this specific date.
@@ -240,22 +242,118 @@ function renderTable(records) {
         return;
     }
 
-    // Your existing table row building loop remains exactly the same...
-    records.forEach(record => {
+    // Loop through records and add dynamic animation delays
+    records.forEach((record, index) => {
         let badgeClass = "badge-normal";
         if (record.category === "Underweight") badgeClass = "badge-underweight";
         if (record.category === "Overweight") badgeClass = "badge-overweight";
         if (record.category === "Obese") badgeClass = "badge-obese";
 
+        // Calculate a cascading delay based on the row number (100ms apart)
+        const rowDelay = index * 0.1;
+
         const row = document.createElement("tr");
+        row.className = "table-row-enter";
+        row.style.animationDelay = `${rowDelay}s`; // Applies the staggered timing
+        
         row.innerHTML = `
             <td>#${record.roll_no}</td>
             <td><strong>${record.name}</strong></td>
-            <td><span class="badge ${badgeClass}">${record.bmi}</span></td>
-            <td><span class="badge ${badgeClass}">${record.category}</span></td>
+            <td><span class="badge ${badgeClass} badge-pop" style="animation-delay: ${rowDelay + 0.2}s">${record.bmi}</span></td>
+            <td><span class="badge ${badgeClass} badge-pop" style="animation-delay: ${rowDelay + 0.3}s">${record.category}</span></td>
             <td>${record.date}</td>
         `;
         tbody.appendChild(row);
     });
 }
+// --- PREMIUM FEATURE: TOAST NOTIFICATIONS ---
+function showToast(message, type = "success") {
+    const toastBox = document.getElementById("toastContainer");
+    const toast = document.createElement("div");
+    
+    // Assign the base toast class and the dynamic success/error class
+    toast.className = `toast toast-${type}`;
+    toast.innerText = message;
+    
+    toastBox.appendChild(toast);
 
+    // Automatically remove the toast from the DOM after the CSS animation finishes (3.5 seconds)
+    setTimeout(() => {
+        toast.remove();
+    }, 3500);
+}
+// --- PREMIUM FEATURE: DASHBOARD ANALYTICS ---
+let bmiChartInstance = null;
+
+function updatePremiumDashboard(records) {
+    // 1. Update the Stat Cards
+    document.getElementById("statTotal").innerText = records.length;
+    
+    if (records.length > 0) {
+        // Calculate average BMI
+        const totalBmi = records.reduce((sum, record) => sum + parseFloat(record.bmi), 0);
+        document.getElementById("statAvgBmi").innerText = (totalBmi / records.length).toFixed(1);
+        
+        // Get the most recent status (assuming the last item in the array is the newest)
+        const latestRecord = records[records.length - 1];
+        document.getElementById("statStatus").innerText = latestRecord.category;
+        
+        // Color code the status text based on category
+        const statusDiv = document.getElementById("statStatus");
+        statusDiv.style.color = latestRecord.category === "Normal" ? "var(--success)" : 
+                               (latestRecord.category === "Underweight" ? "var(--warning)" : "var(--danger)");
+    } else {
+        document.getElementById("statAvgBmi").innerText = "0.0";
+        document.getElementById("statStatus").innerText = "-";
+        document.getElementById("statStatus").style.color = "var(--text-main)";
+    }
+
+    // 2. Draw the Trend Chart
+    const ctx = document.getElementById('bmiChart').getContext('2d');
+    
+    // If a chart already exists, destroy it before drawing a new one so they don't overlap
+    if (bmiChartInstance) {
+        bmiChartInstance.destroy();
+    }
+
+    // Extract dates and BMI numbers from the records for the chart axes
+    const chartLabels = records.map(r => r.date);
+    const chartData = records.map(r => r.bmi);
+
+    bmiChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: chartLabels,
+            datasets: [{
+                label: 'BMI Trend',
+                data: chartData,
+                borderColor: '#00d2ff', // Cyan primary color
+                backgroundColor: 'rgba(0, 210, 255, 0.1)', // Subtle glow under the line
+                borderWidth: 3,
+                tension: 0.4, // Smooths the curve of the line
+                fill: true,
+                pointBackgroundColor: '#1a1f2b',
+                pointBorderColor: '#00d2ff',
+                pointBorderWidth: 2,
+                pointRadius: 5,
+                pointHoverRadius: 7
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false } // Hide the legend for a cleaner look
+            },
+            scales: {
+                y: {
+                    grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                    ticks: { color: '#94a3b8' }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { color: '#94a3b8' }
+                }
+            }
+        }
+    });
+}

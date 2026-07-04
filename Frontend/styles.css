@@ -199,3 +199,151 @@ html {
     border-color: var(--border-color);
     box-shadow: var(--shadow-glow);
 }
+
+/* =========================================
+   PART 4: TABLE EXPERIENCES
+   ========================================= */
+
+/* --- 1. Cascading Row Animations --- */
+.table-row-enter {
+    opacity: 0;
+    /* Reusing the slideInRight keyframe from Part 3 */
+    animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* --- 2. Badge Pop Animation --- */
+.badge-pop {
+    opacity: 0;
+    display: inline-block;
+    /* Reusing the scaleIn keyframe from Part 1 */
+    animation: scaleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* --- 3. Empty State Fade --- */
+.empty-state {
+    animation: fadeIn 0.6s ease forwards;
+}
+
+/* =========================================
+   PART 5: PREMIUM FEATURES (ATMOSPHERE)
+   ========================================= */
+
+/* --- 1. Floating Cinematic Background Blobs --- */
+.bg-blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(90px); /* Creates the soft, atmospheric glow */
+    z-index: -1;
+    opacity: 0.35;
+    animation: floatBlob 12s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.blob-1 { 
+    top: -10%; left: -10%; width: 400px; height: 400px; 
+    background: linear-gradient(to right, #00d2ff 0%, #3a7bd5 100%); 
+}
+.blob-2 { 
+    bottom: -10%; right: -10%; width: 500px; height: 500px; 
+    background: linear-gradient(to right, #8e2de2 0%, #4a00e0 100%); 
+    animation-delay: -6s; /* Makes them move out of sync */
+}
+
+@keyframes floatBlob {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(40px, 60px) scale(1.1); }
+}
+
+/* --- 2. Animated Gradient Text --- */
+.text-gradient {
+    background: linear-gradient(-45deg, #00d2ff, #f8fafc, #00d2ff);
+    background-size: 200% auto;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: shine 4s linear infinite;
+}
+
+@keyframes shine {
+    to { background-position: 200% center; }
+}
+
+/* --- 3. Toast Notifications --- */
+#toastContainer {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.toast {
+    background-color: var(--surface-color);
+    border-left: 4px solid var(--primary);
+    padding: 16px 24px;
+    border-radius: 8px;
+    box-shadow: var(--shadow-lg);
+    color: var(--text-main);
+    font-weight: 500;
+    /* Slides in, then waits 3 seconds, then fades out */
+    animation: slideInRight 0.4s forwards, fadeOut 0.4s forwards 3s;
+}
+
+.toast-success { border-left-color: var(--success); }
+.toast-error { border-left-color: var(--danger); }
+
+@keyframes fadeOut {
+    to { opacity: 0; transform: translateY(10px); pointer-events: none; }
+}
+
+/* --- 4. Premium Statistics Cards --- */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    animation: slideDown 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    backdrop-filter: blur(10px); /* Frosted glass effect */
+    transition: transform var(--transition-speed), border-color var(--transition-speed);
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+    box-shadow: var(--shadow-glow);
+}
+
+.stat-card h4 {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+/* --- 5. Chart Container --- */
+.chart-container {
+    background: rgba(255, 255, 255, 0.015);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    animation: slideUpFade 0.7s ease forwards;
+    animation-delay: 0.2s;
+    opacity: 0;
+}

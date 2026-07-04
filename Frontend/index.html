@@ -170,9 +170,11 @@ tr:hover td { background-color: #f8fafc; color: #000; }
 .logout-btn:hover { background-color: var(--danger-hover); }
 
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-
+    <div class="bg-blob blob-1"></div>
+    <div class="bg-blob blob-2"></div>
     <!-- SCREEN 1: AUTHENTICATION (VISIBLE BY DEFAULT) -->
     <div id="authContainer" class="auth-box">
         <h2 id="authTitle">Login to Health Tracker</h2>
@@ -192,10 +194,27 @@ tr:hover td { background-color: #f8fafc; color: #000; }
     <!-- SCREEN 2: MAIN DASHBOARD (HIDDEN UNTIL LOGIN) -->
     <div id="dashboardContainer" style="display: none;">
         <div class="nav-header">
-            <h1 style="color: #2c3e50; margin: 0;">BMI & Health Record Tracker</h1>
+            <h1 class="text-gradient" style="margin: 0;">BMI & Health Record Tracker</h1>
             <button class="logout-btn" onclick="handleLogout()">Logout</button>
         </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h4>Total Entries</h4>
+                <div id="statTotal" class="stat-value">0</div>
+            </div>
+            <div class="stat-card">
+                <h4>Average BMI</h4>
+                <div id="statAvgBmi" class="stat-value">0.0</div>
+            </div>
+            <div class="stat-card">
+                <h4>Latest Status</h4>
+                <div id="statStatus" class="stat-value">-</div>
+            </div>
+        </div>
 
+        <div class="chart-container">
+            <canvas id="bmiChart"></canvas>
+        </div>
         <div class="container">
             <!-- LEFT: Add New Record Form -->
             <div class="box">
@@ -250,5 +269,6 @@ tr:hover td { background-color: #f8fafc; color: #000; }
     </div>
 
     <script src="script.js"></script>
+    <div id="toastContainer"></div>
 </body>
 </html>
