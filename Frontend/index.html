@@ -197,6 +197,7 @@ tr:hover td { background-color: #f8fafc; color: #000; }
             <h1 class="text-gradient" style="margin: 0;">BMI & Health Record Tracker</h1>
             <button class="logout-btn" onclick="handleLogout()">Logout</button>
         </div>
+
         <div class="stats-grid">
             <div class="stat-card">
                 <h4>Total Entries</h4>
@@ -215,8 +216,8 @@ tr:hover td { background-color: #f8fafc; color: #000; }
         <div class="chart-container">
             <canvas id="bmiChart"></canvas>
         </div>
+
         <div class="container">
-            <!-- LEFT: Add New Record Form -->
             <div class="box">
                 <h2>Add Health Record</h2>
                 <form id="healthForm" class="slide-in-left">
@@ -237,18 +238,14 @@ tr:hover td { background-color: #f8fafc; color: #000; }
                 <div id="formStatus" class="status-msg"></div>
             </div>
 
-            <!-- RIGHT: View Personal Records -->
             <div class="box slide-in-right" style="flex: 1.5;">
                 <h2>Your Health History</h2>
                 <div class="search-group">
-    <!-- Changed type="text" to type="date" for an interactive calendar dropdown -->
-    <input type="date" id="searchDate">
-    <button type="button" onclick="searchRecordsByDate()">Search</button>
-    <button type="button" onclick="clearDateSearch()" style="background-color: #7f8c8d;">Clear</button>
-</div>
-<div id="searchMessage" style="color: #e74c3c; font-weight: bold; margin-top: 10px; font-size: 14px;"></div>
-
-
+                    <input type="date" id="searchDate">
+                    <button type="button" onclick="searchRecordsByDate()">Search</button>
+                    <button type="button" onclick="clearDateSearch()" style="background-color: #7f8c8d;">Clear</button>
+                </div>
+                <div id="searchMessage" style="color: #e74c3c; font-weight: bold; margin-top: 10px; font-size: 14px;"></div>
 
                 <table>
                     <thead>
@@ -261,13 +258,11 @@ tr:hover td { background-color: #f8fafc; color: #000; }
                         </tr>
                     </thead>
                     <tbody id="recordsTableBody">
-                        <!-- User-specific records injected here -->
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
         </div>
     </div>
-
     <script src="script.js"></script>
     <div id="toastContainer"></div>
 </body>
