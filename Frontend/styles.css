@@ -84,3 +84,118 @@ html {
 .delay-100 { animation-delay: 100ms; }
 .delay-200 { animation-delay: 200ms; }
 .delay-300 { animation-delay: 300ms; }
+
+/* =========================================
+   PART 2: LOGIN EXPERIENCE
+   ========================================= */
+
+/* --- 1. Animated Auth Button --- */
+#mainAuthBtn {
+    position: relative;
+    overflow: hidden;
+    /* Adds a satisfying hardware-accelerated click effect */
+    transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s ease;
+}
+
+#mainAuthBtn:active {
+    transform: scale(0.96); 
+    box-shadow: 0 2px 8px rgba(0, 210, 255, 0.15);
+}
+
+/* --- 2. Loading Spinner --- */
+.spinner {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 3px solid rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    border-top-color: #000; /* Matches the button text color */
+    animation: spin 0.8s linear infinite;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* --- 3. Mode Switch Transition --- */
+/* We will trigger this in JS when toggling between Login and Register */
+.mode-switch {
+    animation: scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* --- 4. Success Glow Animation --- */
+.success-pulse {
+    animation: textGlow 1.5s ease-out forwards;
+}
+
+@keyframes textGlow {
+    0% { text-shadow: 0 0 0 rgba(16, 185, 129, 0); }
+    30% { text-shadow: 0 0 15px rgba(16, 185, 129, 0.8); }
+    100% { text-shadow: 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+/* =========================================
+   PART 3: DASHBOARD EXPERIENCE
+   ========================================= */
+
+/* --- 1. Dashboard Master Fade-In --- */
+#dashboardContainer {
+    /* Upgrading the entrance to a smoother, scaling fade */
+    animation: dashboardEnter 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes dashboardEnter {
+    from { opacity: 0; transform: scale(0.97) translateY(15px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* --- 2. Header Animation --- */
+#dashboardContainer h2 {
+    opacity: 0;
+    /* Drops the header in slightly after the main container appears */
+    animation: slideDown 0.5s ease forwards;
+    animation-delay: 0.15s; 
+}
+
+/* --- 3. Opposite Side Slide-Ins (For Cards/Sections) --- */
+.slide-in-left {
+    opacity: 0;
+    will-change: transform, opacity;
+    animation: slideInLeft 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: 0.25s;
+}
+
+.slide-in-right {
+    opacity: 0;
+    will-change: transform, opacity;
+    animation: slideInRight 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: 0.35s;
+}
+
+@keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-40px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(40px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* --- 4. Card & Form Hover Effects --- */
+/* Wrapping the form in a subtle 'glass' card look */
+#healthForm {
+    background: rgba(255, 255, 255, 0.015);
+    padding: 1.5rem;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    transition: transform var(--transition-speed), border-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+#healthForm:hover {
+    transform: translateY(-2px);
+    border-color: var(--border-color);
+    box-shadow: var(--shadow-glow);
+}

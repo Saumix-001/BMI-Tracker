@@ -17,7 +17,12 @@ function toggleAuthMode() {
     const mainAuthBtn = document.getElementById("mainAuthBtn");
     const toggleAuthBtn = document.getElementById("toggleAuthBtn");
     const authStatus = document.getElementById("authStatus");
-    
+    // Add this inside toggleAuthMode()
+    const formContainer = document.getElementById("authForm");
+    formContainer.classList.remove("mode-switch");
+    // Trigger reflow to restart animation
+    void formContainer.offsetWidth; 
+    formContainer.classList.add("mode-switch");
     authStatus.innerText = "";
     
     if (isLoginMode) {
@@ -34,6 +39,13 @@ function toggleAuthMode() {
 // Handle Authentication Form Submit
 document.getElementById("authForm").addEventListener("submit", async (e) => {
     e.preventDefault();
+    
+    // --- PART 2 MODIFICATIONS: Button Spinner Setup ---
+    const mainAuthBtn = document.getElementById("mainAuthBtn");
+    const originalBtnText = mainAuthBtn.innerText;
+    mainAuthBtn.innerHTML = `<span class="spinner"></span> Processing...`;
+    mainAuthBtn.disabled = true; // Prevent double-clicks while loading
+
     const email = document.getElementById("authEmail").value.trim();
     const password = document.getElementById("authPassword").value;
     const statusDiv = document.getElementById("authStatus");
@@ -52,15 +64,16 @@ document.getElementById("authForm").addEventListener("submit", async (e) => {
 
         if (response.ok) {
             statusDiv.style.color = "green";
+            statusDiv.classList.add("success-pulse"); // --- PART 2 MODIFICATIONS: Success Glow ---
             statusDiv.innerText = isLoginMode ? "Login successful!" : "Registration successful! Switching to login...";
             
             if (isLoginMode) {
                 // Save session token locally in the web browser memory context
                 sessionStorage.setItem("current_user_id", data.user_id);
                 
-                // --- MODIFICATION 1: TRACE AND APPLY EXIT ANIMATION ---
+                // Starts the sliding exit animation
                 const authBox = document.getElementById("authContainer");
-                authBox.classList.add("fade-out"); // Starts the sliding exit animation
+                authBox.classList.add("fade-out"); 
                 
                 // Wait exactly 400ms for the animation to play before hiding the box completely
                 setTimeout(showDashboard, 400); 
@@ -78,6 +91,11 @@ document.getElementById("authForm").addEventListener("submit", async (e) => {
     } catch (err) {
         statusDiv.style.color = "red";
         statusDiv.innerText = "Error: Cannot connect to backend server.";
+    } finally {
+        // --- PART 2 MODIFICATIONS: Reset the button ---
+        // This runs no matter what, returning the button to normal
+        mainAuthBtn.innerHTML = originalBtnText;
+        mainAuthBtn.disabled = false;
     }
 });
 
