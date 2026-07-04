@@ -221,7 +221,9 @@ function clearDateSearch() {
 // --- MODIFICATION 3: PREMIUM TABLE SYSTEM WITH DYNAMIC CHIPS ---
 // --- MODIFICATION 3: PREMIUM TABLE SYSTEM WITH DYNAMIC CHIPS ---
 function renderTable(records) {
-    updatePremiumDashboard(records); 
+    updatePremiumDashboard(records); updatePremiumDashboard(records); 
+
+    const tbody = document.getElementById("recordsTableBody");
     const tbody = document.getElementById("recordsTableBody");
     tbody.innerHTML = "";
 
