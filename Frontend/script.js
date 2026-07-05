@@ -222,13 +222,17 @@ function renderTable(records) {
     }
 
     // Your existing table row building loop remains exactly the same...
-    records.forEach(record => {
+    records.forEach((record, index) => {
         let badgeClass = "badge-normal";
         if (record.category === "Underweight") badgeClass = "badge-underweight";
         if (record.category === "Overweight") badgeClass = "badge-overweight";
         if (record.category === "Obese") badgeClass = "badge-obese";
 
         const row = document.createElement("tr");
+
+        row.classList.add("record-row");
+        row.style.animationDelay = `${index * 0.08}s`;
+        
         row.innerHTML = `
             <td>#${record.roll_no}</td>
             <td><strong>${record.name}</strong></td>
