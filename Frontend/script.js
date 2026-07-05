@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://bmi-tracker-8deo.onrender.com";
+const API_BASE_URL = "http://127.0.0.1:8000";
 let isLoginMode = true;
 
 // On initial page load, check if user is already logged in
@@ -222,13 +222,17 @@ function renderTable(records) {
     }
 
     // Your existing table row building loop remains exactly the same...
-    records.forEach(record => {
+    records.forEach((record, index) => {
         let badgeClass = "badge-normal";
         if (record.category === "Underweight") badgeClass = "badge-underweight";
         if (record.category === "Overweight") badgeClass = "badge-overweight";
         if (record.category === "Obese") badgeClass = "badge-obese";
 
         const row = document.createElement("tr");
+
+        row.classList.add("record-row");
+        row.style.animationDelay = `${index * 0.08}s`;
+        
         row.innerHTML = `
             <td>#${record.roll_no}</td>
             <td><strong>${record.name}</strong></td>
