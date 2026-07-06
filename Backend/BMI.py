@@ -153,24 +153,39 @@ def add_record(data: HealthInput):
     save_records(records)
     return record
 
-@app.get("/records", response_model=List[HealthRecord])
-def get_all_records(user_id: str = None):
-    raw_records = load_records()
-    # Filter records, ensuring older legacy records missing 'user_id' don't break the load sequence
-    valid_records = [r for r in raw_records if "user_id" in r and "roll_no" in r]
-    if user_id:
-        return [r for r in valid_records if r.get("user_id") == user_id]
-    return valid_records
+# --- SECURED ENDPOINTS ---
 
-@app.get("/records/{date_str}", response_model=List[HealthRecord])
-def search_record(date_str: str, user_id: str = None):
+@app.get("/records", response_model=List[HealthRecord])
+def get_all_records(x_user_id: str = Header(default=None)):
+    
+    # 1. The Bouncer: Block requests with no header
+    if not x_user_id:
+        raise HTTPException(status_code=401, detail="Unauthorized: No access credentials provided.")
+        
     raw_records = load_records()
     valid_records = [r for r in raw_records if "user_id" in r and "roll_no" in r]
     
+    # 2. The Filter: Only return records matching the header ID
+    return [r for r in valid_records if r.get("user_id") == x_user_id]
+
+
+@app.get("/records/{date_str}", response_model=List[HealthRecord])
+def search_record(date_str: str, x_user_id: str = Header(default=None)):
+    
+    # 1. The Bouncer: Block requests with no header
+    if not x_user_id:
+        raise HTTPException(status_code=401, detail="Unauthorized: No access credentials provided.")
+        
+    raw_records = load_records()
+    valid_records = [r for r in raw_records if "user_id" in r and "roll_no" in r]
+    
+    # 2. The Filter: Match BOTH the date and the specific user ID
     result = [
         r for r in valid_records
-        if r["date"] == date_str and (user_id is None or r.get("user_id") == user_id)
+        if r["date"] == date_str and r.get("user_id") == x_user_id
     ]
+    
     if not result:
         raise HTTPException(status_code=404, detail="Record not found")
+        
     return result
