@@ -115,9 +115,12 @@ document.getElementById("healthForm").addEventListener("submit", async (e) => {
     };
 
     try {
-        const response = await fetch(`${API_BASE_URL}/records`, {
+        const response = await fetch(`${API_PROD_URL}/records`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                "x-user-id": currentUserId  // <-- INSERT THIS
+            },
             body: JSON.stringify(payload)
         });
 
@@ -179,8 +182,13 @@ async function searchRecordsByDate() {
     }
 
     try {
-        const response = await fetch(`${API_BASE_URL}/records/${searchDate}?user_id=${currentUserId}`);
-        const data = await response.json();
+        const response = await fetch(`${API_BASE_URL}/records/${searchDate}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "x-user-id": currentUserId
+            }
+        });        const data = await response.json();
 
         if (response.ok) {
             // If data is found, show it cleanly in the table matrix
