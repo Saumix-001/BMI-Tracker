@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://bmi-tracker-8deo.onrender.com";
+const API_PROD_URL = "https://bmi-tracker-8deo.onrender.com";
 let isLoginMode = true;
 
 // On initial page load, check if user is already logged in
