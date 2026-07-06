@@ -41,7 +41,7 @@ document.getElementById("authForm").addEventListener("submit", async (e) => {
     const endpoint = isLoginMode ? "/login" : "/register";
     
     try {
-        const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+        const response = await fetch(`${API_PROD_URL}${endpoint}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password })
@@ -182,7 +182,7 @@ async function searchRecordsByDate() {
     }
 
     try {
-        const response = await fetch(`${API_BASE_URL}/records/${searchDate}`, {
+        const response = await fetch(`${API_PROD_URL}/records/${searchDate}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
