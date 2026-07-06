@@ -141,12 +141,25 @@ document.getElementById("healthForm").addEventListener("submit", async (e) => {
 // Fetch historical table entries restricted strictly to logged-in profile ID
 async function fetchUserRecords() {
     const currentUserId = sessionStorage.getItem("current_user_id");
+
     try {
-        const response = await fetch(`${API_BASE_URL}/records?user_id=${currentUserId}`);
-        const records = await response.json();
-        renderTable(records);
-    } catch (err) {
-        console.error("Failed to load records:", err);
+        const response = await fetch(`${API_PROD_URL}/records`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                // Pass the custom header so the backend bouncer lets us in!
+                "x-user-id": currentUserId 
+            }
+        });
+
+        if (response.ok) {
+            const records = await response.json();
+            renderTable(records);
+        } else {
+            console.error("Failed to fetch records. Unauthorized.");
+        }
+    } catch (error) {
+        console.error("Connection error:", error);
     }
 }
 
