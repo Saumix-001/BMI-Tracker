@@ -80,6 +80,8 @@ def classify_bmi(bmi):
 class HealthInput(BaseModel):
     user_id: str
     name: str = Field(..., min_length=1)
+    age: int = Field(..., gt=0)          # <-- NEW LINE
+    gender: str = Field(..., min_length=1) # <-- NEW LINE
     weight_kg: float = Field(..., gt=0)
     height_cm: float = Field(..., gt=0)
     roll_no: int = Field(..., gt=0)
@@ -88,12 +90,14 @@ class HealthRecord(BaseModel):
     user_id: str
     roll_no: int
     name: str
+    age: int          # <-- NEW LINE
+    gender: str       # <-- NEW LINE
     weight_kg: float
     height_cm: float
     bmi: float
     category: str
     date: str
-
+    
 class UserRegister(BaseModel):
     email: str = Field(..., min_length=5)
     password: str = Field(..., min_length=6)
@@ -142,6 +146,8 @@ def add_record(data: HealthInput):
         "user_id": data.user_id,
         "roll_no": data.roll_no,
         "name": data.name,
+        "age": data.age,             # <-- NEW LINE
+        "gender": data.gender,       # <-- NEW LINE
         "weight_kg": data.weight_kg,
         "height_cm": data.height_cm,
         "bmi": bmi,

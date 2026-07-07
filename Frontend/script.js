@@ -107,9 +107,15 @@ document.getElementById("healthForm").addEventListener("submit", async (e) => {
     const currentUserId = sessionStorage.getItem("current_user_id");
 
     const payload = {
-        user_id: currentUserId, // Tag entry directly to current session owner
+        user_id: currentUserId, 
         roll_no: parseInt(document.getElementById("rollNo").value),
         name: document.getElementById("name").value.trim(),
+        
+        // --- ADD THESE TWO NEW LINES ---
+        age: parseInt(document.getElementById("age").value),
+        gender: document.getElementById("gender").value,
+        // -------------------------------
+        
         weight_kg: parseFloat(document.getElementById("weight").value),
         height_cm: parseFloat(document.getElementById("height").value)
     };
@@ -257,7 +263,7 @@ function renderTable(records) {
         row.innerHTML = `
             <td>#${record.roll_no}</td>
             <td><strong>${record.name}</strong></td>
-            <td><span class="badge ${badgeClass}">${record.bmi}</span></td>
+            <td>${record.age}</td>                   <td>${record.gender}</td>                <td><span class="badge ${badgeClass}">${record.bmi}</span></td>
             <td><span class="badge ${badgeClass}">${record.category}</span></td>
             <td>${record.date}</td>
         `;
