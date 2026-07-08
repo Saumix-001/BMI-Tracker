@@ -128,5 +128,41 @@
         "bmi": 24.02,
         "category": "Normal Weight",
         "date": "2026-07-07"
+    },
+    {
+        "user_id": "ffae4dc2-2826-41cc-988b-c86aa2804dca",
+        "roll_no": 1,
+        "name": "Saumik",
+        "age": 22,
+        "gender": "Male",
+        "weight_kg": 67.0,
+        "height_cm": 167.0,
+        "bmi": 24.02,
+        "category": "Normal Weight",
+        "date": "2026-07-08"
+    },
+    {
+        "user_id": "ffae4dc2-2826-41cc-988b-c86aa2804dca",
+        "roll_no": 1,
+        "name": "Saumik",
+        "age": 22,
+        "gender": "Male",
+        "weight_kg": 67.0,
+        "height_cm": 167.0,
+        "bmi": 24.02,
+        "category": "Normal Weight",
+        "date": "2026-07-08"
+    },
+    {
+        "user_id": "ffae4dc2-2826-41cc-988b-c86aa2804dca",
+        "roll_no": 1,
+        "name": "Saumik",
+        "age": 22,
+        "gender": "Male",
+        "weight_kg": 67.0,
+        "height_cm": 167.0,
+        "bmi": 24.02,
+        "category": "Normal Weight",
+        "date": "2026-07-08"
     }
 ]

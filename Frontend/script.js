@@ -1,4 +1,4 @@
-const API_PROD_URL = "https://bmi-tracker-8deo.onrender.com";
+const API_PROD_URL = "http://127.0.0.1:8000"; // <-- Change this to your actual backend URL if needed
 let isLoginMode = true;
 
 // On initial page load, check if user is already logged in
@@ -163,7 +163,12 @@ async function fetchUserRecords() {
 
         if (response.ok) {
             const records = await response.json();
+            
+            // 🚨 ADD THIS LINE TO SPY ON THE FIRST RECORD:
+            console.log("Spying on Backend Data:", records[0]); 
+            
             renderTable(records);
+            renderChart(records);
         } else {
             console.error("Failed to fetch records. Unauthorized.");
         }
@@ -227,47 +232,199 @@ function clearDateSearch() {
 
 
 // --- MODIFICATION 3: PREMIUM TABLE SYSTEM WITH DYNAMIC CHIPS ---
+// --- UPGRADED: PREMIUM CARD RENDERER ---
+// --- UPGRADED: PREMIUM CARD RENDERER ---
 function renderTable(records) {
-    const tbody = document.getElementById("recordsTableBody");
-    tbody.innerHTML = "";
+    const grid = document.getElementById("recordsGrid");
+    grid.innerHTML = ""; // Clear the old cards
 
+    // If they searched a date with no records, tell them!
     if (records.length === 0) {
-        // SMART FIX: Put a helpful message and a button right inside the empty table!
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="5" style="text-align:center; padding: 40px;">
-                    <div style="color: var(--text-muted); font-size: 16px; margin-bottom: 12px;">
-                        🔍 No health records found for this specific date.
-                    </div>
-                    <button type="button" onclick="clearDateSearch()" style="width: auto; padding: 8px 20px; background-color: var(--secondary);">
-                        View All History Records
-                    </button>
-                </td>
-            </tr>
-        `;
+        grid.innerHTML = "<p style='color: #6b7280; font-style: italic;'>No health records found for this date.</p>";
         return;
     }
 
-    // Your existing table row building loop remains exactly the same...
+    // Loop through their history and build the new smart cards
+    // We add 'index' here to calculate the staggered delay!
     records.forEach((record, index) => {
-        let badgeClass = "badge-normal";
-        if (record.category === "Underweight") badgeClass = "badge-underweight";
-        if (record.category === "Overweight") badgeClass = "badge-overweight";
-        if (record.category === "Obese") badgeClass = "badge-obese";
+        let statusText = "";
+        let badgeColor = "";
 
-        const row = document.createElement("tr");
+        if (record.bmi < 18.5) {
+            statusText = "Underweight";
+            badgeColor = "#f59e0b"; 
+        } else if (record.bmi >= 18.5 && record.bmi <= 24.9) {
+            statusText = "Healthy Range";
+            badgeColor = "#10b981"; 
+        } else if (record.bmi >= 25 && record.bmi <= 29.9) {
+            statusText = "Overweight";
+            badgeColor = "#f97316"; 
+        } else {
+            statusText = "Needs Attention";
+            badgeColor = "#ef4444"; 
+        }
 
-        row.classList.add("record-row");
-        row.style.animationDelay = `${index * 0.08}s`;
+        const card = document.createElement("div");
         
-        row.innerHTML = `
-            <td>#${record.roll_no}</td>
-            <td><strong>${record.name}</strong></td>
-            <td>${record.age}</td>                   <td>${record.gender}</td>                <td><span class="badge ${badgeClass}">${record.bmi}</span></td>
-            <td><span class="badge ${badgeClass}">${record.category}</span></td>
-            <td>${record.date}</td>
+        // 1. Initial State: Invisible and pushed down 20 pixels
+        card.style.cssText = `
+            background: white; 
+            padding: 15px; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
+            margin-bottom: 12px; 
+            border-left: 5px solid ${badgeColor};
+            opacity: 0; 
+            transform: translateY(20px); 
+            transition: all 0.4s ease-out;
         `;
-        tbody.appendChild(row);
+
+        // Fix for the undefined weight bug!
+        const displayWeight = record.weight_kg !== undefined ? record.weight_kg : "N/A";
+
+        card.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px;">
+                <strong style="color: #1f2937;">📅 ${record.date}</strong>
+                <span style="background-color: ${badgeColor}; color: white; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: bold;">
+                    ${statusText}
+                </span>
+            </div>
+            <div style="display: flex; justify-content: space-between; color: #4b5563;">
+                <span><strong>BMI:</strong> ${record.bmi}</span>
+                <span><strong>Weight:</strong> ${displayWeight} kg</span>
+            </div>
+        `;
+        
+        grid.appendChild(card);
+
+        // 2. The Magic Trick: Force the animation to trigger AFTER the card is on the page
+        // We multiply the index by 100 milliseconds to create that beautiful cascading effect
+        setTimeout(() => {
+            card.style.opacity = "1";
+            card.style.transform = "translateY(0)";
+        }, index * 100); 
     });
 }
+// --- NEW TAB SWITCHING LOGIC ---
+// --- UPGRADED TAB SWITCHING LOGIC ---
+// --- CRASH-PROOF TAB SWITCHING LOGIC ---
+function switchTab(tabId) {
+    // 1. Create lists of all possible rooms and buttons
+    const allRooms = ["view-dash", "view-calc", "view-records", "view-trends"];
+    const allTabs = ["tab-dash", "tab-calc", "tab-records", "tab-trends"];
 
+    // 2. Safely hide all rooms (only if they exist!)
+    allRooms.forEach(roomId => {
+        const roomElement = document.getElementById(roomId);
+        if (roomElement) {
+            roomElement.style.display = "none";
+        }
+    });
+    
+    // 3. Safely turn off all buttons (only if they exist!)
+    allTabs.forEach(btnId => {
+        const btnElement = document.getElementById(btnId);
+        if (btnElement) {
+            btnElement.classList.remove("active");
+        }
+    });
+
+    // 4. Turn on the specific room and button the user clicked
+    const selectedRoom = document.getElementById("view-" + tabId);
+    const selectedTab = document.getElementById("tab-" + tabId);
+    
+    if (selectedRoom) selectedRoom.style.display = "block";
+    if (selectedTab) selectedTab.classList.add("active");
+
+    // 5. If they open Records or Trends, pull fresh data!
+    if (tabId === 'records' || tabId === 'trends') {
+        if (typeof fetchUserRecords === "function") {
+            fetchUserRecords(); 
+        }
+    }
+}
+// Variable to keep track of the chart so we can update it without glitches
+let myBmiChart = null;
+
+function renderChart(records) {
+    const ctx = document.getElementById('bmiChart').getContext('2d');
+    
+    // Sort records by date so the graph flows left to right chronologically
+    const sortedRecords = [...records].sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    // Extract the labels (X-axis) and data points (Y-axis)
+    const dates = sortedRecords.map(r => r.date);
+    const bmis = sortedRecords.map(r => r.bmi);
+
+    // Destroy the old chart if it exists before drawing a new one
+    if (myBmiChart) {
+        myBmiChart.destroy();
+    }
+
+    // Paint the new chart
+    myBmiChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: dates,
+            datasets: [{
+                label: 'Your BMI',
+                data: bmis,
+                borderColor: '#2563eb', // Brand blue
+                backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                borderWidth: 3,
+                pointBackgroundColor: '#10b981', // Green dots
+                pointRadius: 5,
+                fill: true,
+                tension: 0.3 // Makes the line slightly curved and smooth
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    suggestedMin: 15, // Keeps the graph focused on normal BMI ranges
+                    suggestedMax: 35
+                }
+            }
+        }
+    });
+}
+async function exportJSON() {
+    const currentUserId = sessionStorage.getItem("current_user_id");
+    
+    try {
+        // We use your actual API_PROD_URL and your security headers!
+        const response = await fetch(`${API_PROD_URL}/records`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "x-user-id": currentUserId
+            }
+        }); 
+        
+        const data = await response.json();
+
+        // Format and create the file
+        const jsonString = JSON.stringify(data, null, 2);
+        const blob = new Blob([jsonString], { type: "application/json" });
+
+        // Trigger the download
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = "My_HealthTrack_History.json"; 
+        
+        document.body.appendChild(a);
+        a.click();
+
+        // Clean up
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
+    } catch (error) {
+        console.error("Export failed:", error);
+        alert("Failed to export data.");
+    }
+}
