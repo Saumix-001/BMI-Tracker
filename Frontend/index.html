@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BMI & Health Tracker</title>
     <style>
+    
         :root {
     --bg-gradient: linear-gradient(135deg, #f5f7fb 0%, #e4ecf7 100%);
     --card-bg: #ffffff;
@@ -61,7 +62,6 @@ body {
         transform: translateY(30px); /* Slides downward while vanishing */
     }
 }
-
 
 .auth-box.fade-out {
     animation: fadeOutDown 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
@@ -344,15 +344,28 @@ tbody tr:hover {
 
 /* ... the rest of the tab-btn CSS ... */
 /* --- PREMIUM HERO & DASHBOARD STYLES --- */
-.hero-banner {
-    background: linear-gradient(135deg, #1e3a8a 0%, #0d9488 100%);
-    padding: 50px 40px;
-    border-radius: 20px;
-    color: #ffffff;
-    margin-bottom: 40px;
-    box-shadow: 0 10px 25px rgba(13, 148, 136, 0.15);
-}
+/* --- THE ANIMATED HERO BANNER --- */
+        @keyframes gradientWave {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
+       .hero-banner {
+            /* 1. Structural styling */
+            padding: 40px;
+            border-radius: 12px;
+            color: white;
+            margin-bottom: 25px;
+            /* Glowing drop shadow using the bright cyan */
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.25); 
+
+            /* 2. The Ultimate Hybrid Palette */
+            /* Deep blues from your custom image -> Bright cyans from the Oceanic palette */
+            background: linear-gradient(-45deg, #004A61, #00759A, #0891b2, #06b6d4);
+            background-size: 400% 400%;
+            animation: gradientWave 15s ease infinite;
+        }
 .hero-banner h1 {
     font-size: 32px;
     font-weight: 700;
@@ -461,6 +474,214 @@ tbody tr:hover {
 .clickable-card {
     cursor: pointer;
 }
+/* --- DASHBOARD BUTTONS (Inside the Banner) --- */
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        /* The Main Call to Action */
+        .hero-btn-primary {
+            background-color: white;
+            color: #004A61; /* Matches your deepest ocean blue */
+            padding: 12px 28px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 800;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .hero-btn-primary:hover {
+            transform: translateY(-3px); /* Lifts up on hover */
+            box-shadow: 0 8px 20px rgba(6, 182, 212, 0.4); /* Cyan glow */
+            color: #00759A; 
+        }
+
+        /* The Secondary Glass/Ghost Button */
+        .hero-btn-secondary {
+            background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent glass */
+            color: white;
+            padding: 12px 28px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(4px); /* Blurs the wave behind it slightly */
+        }
+
+        .hero-btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.25);
+            border-color: white;
+            transform: translateY(-3px);
+        }
+
+        /* --- DASHBOARD FEATURE CARDS --- */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .clickable-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .clickable-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 166, 214, 0.15); /* Soft cyan shadow */
+            border-color: #06b6d4; /* Highlights the border in cyan */
+        }
+
+        .clickable-card h3 {
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+
+        .clickable-card p {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        /* --- CALCULATOR PAGE HARMONY --- */
+
+        /* 1. The Small Icon Box (Top Left of the Card) */
+        .bmi-icon-box {
+            background-color: rgba(6, 182, 212, 0.12) !important; /* Soft tint of your cyan */
+            color: #00759A !important; /* Deep ocean blue for the icon itself */
+        }
+
+        /* 2. Form Inputs & Dropdowns */
+        .calculator-form input, 
+        .calculator-form select {
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 10px;
+            transition: all 0.2s ease;
+        }
+
+        /* The Focus State: Light up with a premium cyan halo when clicked */
+        .calculator-form input:focus, 
+        .calculator-form select:focus {
+            outline: none;
+            border-color: #06b6d4 !important; 
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.2) !important;
+        }
+
+        /* 3. The Main "Calculate & Save" Button */
+        .btn-calc-primary {
+            background: linear-gradient(135deg, #00759A, #004A61) !important; /* Rich ocean base */
+            color: white !important;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 74, 97, 0.15);
+        }
+
+        .btn-calc-primary:hover {
+            background: linear-gradient(135deg, #06b6d4, #00759A) !important; /* Shifts to gorgeous cyan */
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(6, 182, 212, 0.35); /* Glowing cyan shadow */
+        }
+
+        /* 4. The "Clear" Button */
+        .btn-calc-secondary {
+            background-color: #f1f5f9 !important;
+            color: #475569 !important;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .btn-calc-secondary:hover {
+            background-color: #e2e8f0 !important;
+            color: #1e293b !important;
+        }
+        /* --- PREMIUM LOGO & TOP NAVIGATION --- */
+        
+        .app-logo {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 900;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+           /* Creates a beautiful gradient text effect */
+            background: linear-gradient(to right, #004A61, #06b6d4);
+            -webkit-background-clip: text;
+            background-clip: text; /* <-- ADD THIS LINE! */
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Upgrading the Nav Buttons to Pill Shapes */
+        .nav-btn-clean {
+            background-color: transparent;
+            color: #475569;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 20px; /* Modern pill shape */
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn-clean:hover {
+            background-color: rgba(6, 182, 212, 0.1); /* Soft cyan background */
+            color: #00759A; /* Deep ocean text */
+            transform: translateY(-1px);
+        }
+
+        .logout-btn-clean {
+            background-color: transparent;
+            color: #64748b;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn-clean:hover {
+            background-color: #fff1f2;
+            color: #e11d48; /* A more premium, deeper rose-red instead of bright neon red */
+            transform: translateY(-1px);
+        }
+        /* --- RECORD CARDS AESTHETIC UPGRADE --- */
+        .history-card-aesthetic {
+            transition: all 0.3s ease !important;
+            cursor: pointer;
+        }
+        
+        .history-card-aesthetic:hover {
+            transform: translateY(-4px);
+            /* Adds our signature deep ocean/cyan glow */
+            box-shadow: 0 12px 25px rgba(6, 182, 212, 0.15) !important; 
+        }
     </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -486,12 +707,16 @@ tbody tr:hover {
     <div id="dashboardContainer" style="display: none;">
         
         <div class="top-nav" style="display: flex; justify-content: space-between; align-items: center;">
-            <h2 style="margin: 0; color: #1a365d; font-weight: 800; font-family: sans-serif;">HealthTrack</h2>
+            <h2 class="app-logo"><span>✨</span> HealthTrack</h2>
             
-            <div style="display: flex; gap: 15px; align-items: center;">
-                <button id="tab-dash" class="tab-btn active" onclick="switchTab('dash')">Dashboard</button>
-                <button class="logout-btn" onclick="handleLogout()">Logout</button>
-            </div>
+            <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end;">
+            <button class="nav-btn-clean" onclick="switchTab('dash')">
+                <span>㗊</span> Dashboard
+            </button>
+            <button class="logout-btn-clean" onclick="handleLogout()">
+                <span>🚪</span> Logout
+            </button>
+        </div>
         </div>
 
         <div class="container" style="flex-direction: column; max-width: 1100px; margin: 0 auto;">
@@ -526,49 +751,63 @@ tbody tr:hover {
             </div> 
             
             <div id="view-calc" class="view-page" style="display: none;">
-                <div class="box" style="max-width: 600px; margin: 0 auto;">
-                    <h2>BMI Calculator</h2>
-                    <p style="color: var(--text-muted); margin-bottom: 20px;">Enter your details to calculate and save your BMI</p>
-                    
-                    <form id="healthForm">
-                        <label>Roll Number:</label>
-                        <input type="number" id="rollNo" required min="1">
-                        
-                        <label>Full Name:</label>
-                        <input type="text" id="name" required minlength="1">
-                        
-                        <label>Age (Years):</label>
-                        <input type="number" id="age" required min="1" placeholder="e.g. 25">
-                        
-                        <label>Gender:</label>
-                        <select id="gender" required>
-                            <option value="" disabled selected>Select Gender</option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                            <option value="Other">Other</option>
-                        </select>
-                        
-                        <label>Weight (kg):</label>
-                        <input type="number" id="weight" step="0.1" required min="0.1">
-                        
-                        <label>Height (cm):</label>
-                        <input type="number" id="height" step="0.1" required min="0.1">
-                        
-                        <button type="submit" style="margin-top: 15px; width: 100%; background-color: #2563eb; color: white; padding: 12px; border-radius: 6px; border: none; font-weight: bold; cursor: pointer;">Calculate & Save</button>
-                    </form>
-                    
-                    <div id="formStatus" class="status-msg"></div>
-                </div>
-            </div> 
+    <div style="display: flex; gap: 20px; max-width: 900px; margin: 0 auto; flex-wrap: wrap;">
+        
+        <div class="box" style="flex: 1; min-width: 320px;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                <div style="background: #e2e8f0; padding: 10px; border-radius: 8px; font-size: 20px;">🔄</div>
+                <h2 style="margin: 0;">BMI Calculator</h2>
+            </div>
+            <p style="color: #64748b; margin-bottom: 20px;">Enter your details to calculate and save your BMI</p>
+            
+            <form id="healthForm">
+                <label>Roll Number:</label>
+                <input type="number" id="rollNo" required min="1">
+                
+                <label>Full Name:</label>
+                <input type="text" id="name" required minlength="1">
+                
+                <label>Age (Years):</label>
+                <input type="number" id="age" required min="1" placeholder="e.g. 25">
+                
+                <label>Gender:</label>
+                <select id="gender" required>
+                    <option value="" disabled selected>Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+                
+                <label>Weight (kg):</label>
+                <input type="number" id="weight" step="0.1" required min="0.1">
+                
+                <label>Height (cm):</label>
+                <input type="number" id="height" step="0.1" required min="0.1">
+                
+                <div style="display: flex; gap: 10px; margin-top: 15px;">
+                    <button type="submit" class="btn-calc-primary" style="flex: 2; padding: 12px;">Calculate & Save</button>
+                    <button type="reset" class="btn-calc-secondary" style="flex: 1; padding: 12px;">Clear</button>                </div>
+            </form>
+        </div>
+
+        <div class="box" style="flex: 1; min-width: 320px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background-color: #f8fafc; border: 2px dashed #e2e8f0;">
+            <div id="instantResultBox">
+                <div style="font-size: 50px; color: #cbd5e1; margin-bottom: 15px;">⚖️</div>
+                <p style="color: #64748b; font-size: 16px;">Fill out the form and calculate your BMI to see results here.</p>
+            </div>
+        </div>
+        
+    </div>
+</div>
 
             <div id="view-records" class="view-page" style="display: none;">
                 <div class="box">
                     <h2>Your Health History</h2>
                     
                     <div class="search-group" style="display: flex; gap: 10px; margin-bottom: 20px;">
-                        <input type="date" id="searchDate" style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
-                        <button type="button" onclick="searchRecordsByDate()" style="padding: 10px 20px; background-color: #10b981; color: white; border: none; border-radius: 6px; cursor: pointer;">Search</button>
-                        <button type="button" onclick="clearDateSearch()" style="padding: 10px 20px; background-color: #6b7280; color: white; border: none; border-radius: 6px; cursor: pointer;">Clear</button>
+                        <input type="date" id="searchDate" style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 6px; outline: none;">
+                        <button type="button" class="btn-calc-primary" onclick="searchRecordsByDate()" style="padding: 10px 25px;">Search</button>
+                        <button type="button" class="btn-calc-secondary" onclick="clearDateSearch()" style="padding: 10px 25px;">Clear</button>
                     </div>
                     <div id="searchMessage" style="color: #e74c3c; font-weight: bold; font-size: 14px;"></div>
                     

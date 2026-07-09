@@ -164,5 +164,101 @@
         "bmi": 24.02,
         "category": "Normal Weight",
         "date": "2026-07-08"
+    },
+    {
+        "user_id": "ffae4dc2-2826-41cc-988b-c86aa2804dca",
+        "roll_no": 1,
+        "name": "Saumik",
+        "age": 22,
+        "gender": "Male",
+        "weight_kg": 67.0,
+        "height_cm": 167.0,
+        "bmi": 24.02,
+        "category": "Normal Weight",
+        "date": "2026-07-09"
+    },
+    {
+        "user_id": "ffae4dc2-2826-41cc-988b-c86aa2804dca",
+        "roll_no": 1,
+        "name": "Saumik",
+        "age": 22,
+        "gender": "Male",
+        "weight_kg": 55.0,
+        "height_cm": 167.0,
+        "bmi": 19.72,
+        "category": "Normal Weight",
+        "date": "2026-07-09"
+    },
+    {
+        "user_id": "ffae4dc2-2826-41cc-988b-c86aa2804dca",
+        "roll_no": 1,
+        "name": "Saumik",
+        "age": 22,
+        "gender": "Male",
+        "weight_kg": 77.0,
+        "height_cm": 167.0,
+        "bmi": 27.61,
+        "category": "Overweight",
+        "date": "2026-07-09"
+    },
+    {
+        "user_id": "ffae4dc2-2826-41cc-988b-c86aa2804dca",
+        "roll_no": 1,
+        "name": "Saumik",
+        "age": 22,
+        "gender": "Male",
+        "weight_kg": 88.0,
+        "height_cm": 170.0,
+        "bmi": 30.45,
+        "category": "Obese",
+        "date": "2026-07-09"
+    },
+    {
+        "user_id": "ffae4dc2-2826-41cc-988b-c86aa2804dca",
+        "roll_no": 1,
+        "name": "Saumik",
+        "age": 22,
+        "gender": "Male",
+        "weight_kg": 90.0,
+        "height_cm": 180.0,
+        "bmi": 27.78,
+        "category": "Overweight",
+        "date": "2026-07-09"
+    },
+    {
+        "user_id": "ffae4dc2-2826-41cc-988b-c86aa2804dca",
+        "roll_no": 1,
+        "name": "Saumik",
+        "age": 22,
+        "gender": "Male",
+        "weight_kg": 77.0,
+        "height_cm": 170.0,
+        "bmi": 26.64,
+        "category": "Overweight",
+        "date": "2026-07-09"
+    },
+    {
+        "user_id": "ffae4dc2-2826-41cc-988b-c86aa2804dca",
+        "roll_no": 1,
+        "name": "Saumik",
+        "age": 22,
+        "gender": "Male",
+        "weight_kg": 66.0,
+        "height_cm": 167.0,
+        "bmi": 23.67,
+        "category": "Normal Weight",
+        "date": "2026-07-09"
+    },
+    {
+        "user_id": "ffae4dc2-2826-41cc-988b-c86aa2804dca",
+        "roll_no": 1,
+        "name": "Sau",
+        "age": 22,
+        "gender": "Male",
+        "weight_kg": 45.0,
+        "height_cm": 167.0,
+        "bmi": 16.14,
+        "category": "Underweight",
+        "date": "2026-07-09"
     }
 ]

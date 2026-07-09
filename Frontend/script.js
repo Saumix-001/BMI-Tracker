@@ -1,4 +1,4 @@
-const API_PROD_URL = "https://bmi-tracker-8deo.onrender.com"; // <-- Changed to actual production backend URL
+const API_PROD_URL = "http://127.0.0.1:8000"; // <-- Changed to actual production backend URL
 let isLoginMode = true;
 
 // On initial page load, check if user is already logged in
@@ -125,25 +125,59 @@ document.getElementById("healthForm").addEventListener("submit", async (e) => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "x-user-id": currentUserId  // <-- INSERT THIS
+                "x-user-id": currentUserId
             },
             body: JSON.stringify(payload)
         });
 
         const data = await response.json();
+        const resultBox = document.getElementById("instantResultBox");
 
         if (response.ok) {
-            statusDiv.style.color = "green";
-            statusDiv.innerText = `Saved! BMI: ${data.bmi} (${data.category})`;
+            // 1. Clear the form and update background data
             document.getElementById("healthForm").reset();
             fetchUserRecords();
+
+            // 2. Grab the BMI and Category
+            const returnedBmi = parseFloat(data.bmi);
+            
+            // 3. Determine the color badge
+            let badgeColor = "#10b981"; // Default Green
+            let statusText = data.category || "Healthy Range"; 
+            
+            if (returnedBmi < 18.5) { 
+                badgeColor = "#f59e0b"; // Orange for underweight
+            } else if (returnedBmi >= 25 && returnedBmi < 30) {
+                badgeColor = "#f97316"; // Dark orange for overweight
+            } else if (returnedBmi >= 30) { 
+                badgeColor = "#ef4444"; // Red for obese
+            }
+
+            // 4. Inject the stunning visual result into the right side!
+            // 4. Inject the stunning visual result into the right side!
+        // 4. Inject the stunning visual result into the right side!
+        resultBox.innerHTML = `
+            <h3 style="color: #1e293b; margin-bottom: 5px;">Your Results</h3>
+            <div style="font-size: 48px; font-weight: 900; color: #2563eb; margin: 10px 0;">${returnedBmi}</div>
+            <span style="background-color: ${badgeColor}; color: white; padding: 6px 16px; border-radius: 20px; font-weight: bold; font-size: 14px;">
+                ${statusText}
+            </span>
+            <p style="color: #64748b; margin-top: 20px; font-size: 14px;">Record saved to your history!</p>
+            
+            <div style="display: flex; justify-content: center; margin-top: 20px;">
+                <button onclick="switchTab('records')" style="background-color: #eff6ff; color: #2563eb; padding: 10px 24px; border-radius: 6px; border: none; cursor: pointer; font-weight: bold; font-size: 14px;">View Records</button>
+            </div>
+        `;
         } else {
-            statusDiv.style.color = "red";
-            statusDiv.innerText = `Error: ${data.detail || "Submission failed"}`;
+            // Show server errors directly in the new result box
+            resultBox.innerHTML = `<p style="color: #ef4444; font-weight: bold;">Error: ${data.detail || "Submission failed"}</p>`;
         }
     } catch (err) {
-        statusDiv.style.color = "red";
-        statusDiv.innerText = "Error: Cannot connect to backend server.";
+        // Show connection errors directly in the new result box
+        const resultBox = document.getElementById("instantResultBox");
+        if(resultBox) {
+            resultBox.innerHTML = `<p style="color: #ef4444; font-weight: bold;">Error: Cannot connect to backend server.</p>`;
+        }
     }
 });
 
@@ -266,6 +300,7 @@ function renderTable(records) {
 
         const card = document.createElement("div");
         
+        
         // 1. Initial State: Invisible and pushed down 20 pixels
         card.style.cssText = `
             background: white; 
@@ -379,6 +414,11 @@ function renderChart(records) {
             }]
         },
         options: {
+            animation: {
+                duration: 2000, // Takes exactly 2 seconds to draw the graph
+                easing: 'easeOutQuart', // Starts fast, then smoothly decelerates
+                delay: 200 // Slight pause so the user can see it start after clicking the tab
+            },
             responsive: true,
             maintainAspectRatio: false,
             scales: {
