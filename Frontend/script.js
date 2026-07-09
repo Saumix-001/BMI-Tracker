@@ -395,26 +395,28 @@ let myBmiChart = null;
 
 function renderChart(records) {
     const ctx = document.getElementById('bmiChart').getContext('2d');
-
-    // Sort records chronologically
+    
+    // Sort and extract data
     const sortedRecords = [...records].sort((a, b) => new Date(a.date) - new Date(b.date));
     const dates = sortedRecords.map(r => r.date);
     const bmis = sortedRecords.map(r => r.bmi);
 
-    // Destroy existing chart to trigger fresh animation
+    // Destroy existing chart
     if (window.myBmiChart instanceof Chart) {
         window.myBmiChart.destroy();
     }
 
-    // Delay chart creation slightly to ensure tab visibility
+    // Step 1: Wait for tab to be fully visible
     setTimeout(() => {
+        
+        // Step 2: Build the chart with an EMPTY data array
         window.myBmiChart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: dates,
                 datasets: [{
                     label: 'Your BMI',
-                    data: bmis,
+                    data: [], // <--- START EMPTY!
                     borderColor: '#06b6d4',
                     backgroundColor: 'rgba(6, 182, 212, 0.15)',
                     borderWidth: 3,
@@ -427,26 +429,10 @@ function renderChart(records) {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                animation: { // <-- Make sure this is singular!
+                // Simple, powerful animation setting
+                animation: {
                     duration: 1500,
                     easing: 'easeOutQuint'
-                },
-                animations: { // <-- This one stays plural
-                    x: {
-                        type: 'number',
-                        easing: 'easeOutQuint',
-                        duration: 1500,
-                        from: NaN
-                    },
-                    y: {
-                        type: 'number',
-                        easing: 'easeOutQuint',
-                        duration: 1500,
-                        from(ctx) {
-                            // Clean, valid syntax here:
-                            return ctx.chart.scales.y.getPixelForValue(15);
-                        }
-                    }
                 },
                 scales: {
                     y: {
@@ -457,8 +443,14 @@ function renderChart(records) {
                 }
             }
         });
-        window.myBmiChart.update();
-    }, 100); // 100ms delay is usually enough to let the browser render the 'div'
+
+        // Step 3: Inject the real data right after it builds, forcing the animation
+        setTimeout(() => {
+            window.myBmiChart.data.datasets[0].data = bmis;
+            window.myBmiChart.update();
+        }, 50); // Just a tiny 50ms delay is enough
+
+    }, 100); 
 }
 async function exportJSON() {
     const currentUserId = sessionStorage.getItem("current_user_id");
