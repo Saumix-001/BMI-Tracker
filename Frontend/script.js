@@ -420,10 +420,10 @@ function renderChart(records) {
                 delay: 300 // Slight pause so the user can see it start after clicking the tab
             },
             responsive: true,
-            maintainAspectRatio: false,
+            maintainAspectRatio: true,
             scales: {
                 y: {
-                    beginAtZero: false,
+                    beginAtZero: true,
                     suggestedMin: 15, // Keeps the graph focused on normal BMI ranges
                     suggestedMax: 35
                 }
