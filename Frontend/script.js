@@ -1,4 +1,4 @@
-const API_PROD_URL = "http://127.0.0.1:8000"; // <-- Changed to actual production backend URL
+const API_PROD_URL = "https://bmi-tracker-8deo.onrender.com"; // <-- Changed to actual production backend URL
 let isLoginMode = true;
 
 // On initial page load, check if user is already logged in
