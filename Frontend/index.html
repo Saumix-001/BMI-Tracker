@@ -1,990 +1,1003 @@
+<html>
+
+<head></head>
+
+<body>
+    <h1 id='sample'>My First Heading</h1>
+    <p>My first paragraph.</p>
+</body>
+
+</html>
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BMI & Health Tracker</title>
     <style>
-      :root {
-        --bg-gradient: linear-gradient(135deg, #f5f7fb 0%, #e4ecf7 100%);
-        --card-bg: #ffffff;
-        --text-main: #2c3e50;
-        --text-muted: #7f8c8d;
-        --primary: #4a90e2;
-        --primary-hover: #357abd;
-        --secondary: #95a5a6;
-        --secondary-hover: #7f8c8d;
-        --success: #2ecc71;
-        --danger: #e74c3c;
-        --danger-hover: #c0392b;
-        --shadow: 0 10px 30px rgba(163, 177, 198, 0.35);
-        --radius: 12px;
-        --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-      }
-
-      body {
-        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-        margin: 0;
-        padding: 40px 20px;
-        background: var(--bg-gradient);
-        color: var(--text-main);
-        min-height: 100vh;
-        box-sizing: border-box;
-      }
-
-      /* --- ANIMATIONS --- */
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      @keyframes pulse {
-        0% {
-          transform: scale(1);
-        }
-
-        50% {
-          transform: scale(1.02);
-        }
-
-        100% {
-          transform: scale(1);
-        }
-      }
-
-      /* --- LEAVING ANIMATION FOR THE AUTH BOX --- */
-      @keyframes fadeOutDown {
-        from {
-          opacity: 1;
-          transform: translateY(0);
-        }
-
-        to {
-          opacity: 0;
-          transform: translateY(30px);
-          /* Slides downward while vanishing */
-        }
-      }
-
-      .auth-box.fade-out {
-        animation: fadeOutDown 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
-      }
-
-      /* --- STYLIZED AUTH BOX --- */
-      .auth-box {
-        max-width: 400px;
-        margin: 60px auto;
-        background: var(--card-bg);
-        padding: 40px;
-        border-radius: var(--radius);
-        box-shadow: var(--shadow);
-        animation: fadeInUp 0.5s var(--transition);
-      }
-
-      /* --- DASHBOARD LAYOUT --- */
-      .nav-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        max-width: 1100px;
-        margin: 0 auto 30px auto;
-        padding-bottom: 20px;
-        border-bottom: 2px solid rgba(0, 0, 0, 0.05);
-        animation: fadeInUp 0.4s var(--transition);
-      }
-
-      .container {
-        display: flex;
-        gap: 30px;
-        max-width: 1100px;
-        margin: 0 auto;
-      }
-
-      @media (max-width: 768px) {
-        .container {
-          flex-direction: column;
-        }
-      }
-
-      .box {
-        background: var(--card-bg);
-        padding: 30px;
-        border-radius: var(--radius);
-        box-shadow: var(--shadow);
-        flex: 1;
-        transition: var(--transition);
-        animation: fadeInUp 0.6s var(--transition);
-      }
-
-      .box:hover {
-        transform: translateY(-4px) scale(1.01);
-        box-shadow: 0 18px 40px rgba(163, 177, 198, .45);
-      }
-
-      h1,
-      h2,
-      h3 {
-        margin-top: 0;
-        color: var(--text-main);
-        font-weight: 700;
-      }
-
-      /* --- SMOOTH INPUTS & BUTTONS --- */
-      label {
-        font-weight: 600;
-        font-size: 13px;
-        color: var(--text-muted);
-        display: block;
-        margin-top: 12px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-      }
-
-      input,
-      select,
-      button {
-        width: 100%;
-        padding: 12px 16px;
-        margin: 8px 0;
-        border: 2px solid #e4ecf7;
-        border-radius: var(--radius);
-        box-sizing: border-box;
-        font-size: 15px;
-        transition: var(--transition);
-        outline: none;
-      }
-
-      input:focus,
-      select:focus {
-        border-color: var(--primary);
-        background-color: #fafbfc;
-        box-shadow: 0 0 0 4px rgba(74, 144, 226, .15);
-        transform: scale(1.01);
-      }
-
-      button {
-        background-color: var(--primary);
-        color: white;
-        border: none;
-        font-weight: bold;
-        cursor: pointer;
-        position: relative;
-        overflow: hidden;
-        transition:
-          transform .25s ease,
-          box-shadow .25s ease,
-          background-color .25s ease,
-          filter .25s ease;
-      }
-
-      button {
-        transition:
-          transform .25s ease,
-          box-shadow .25s ease,
-          background-color .25s ease;
-      }
-
-      button:hover {
-        background-color: var(--primary-hover);
-        transform: translateY(-2px);
-        box-shadow: 0 10px 20px rgba(74, 144, 226, .25);
-      }
-
-      button:active {
-        transform: scale(.97);
-      }
-
-      button:active {
-        transform: scale(.97);
-        box-shadow: 0 4px 10px rgba(0, 0, 0, .18);
-      }
-
-      .btn-secondary {
-        background-color: var(--secondary);
-        margin-top: 4px;
-      }
-
-      .btn-secondary:hover {
-        background-color: var(--secondary-hover);
-      }
-
-      .search-group {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 20px;
-      }
-
-      .search-group input {
-        margin: 0;
-      }
-
-      .search-group button {
-        min-width: 100px;
-        margin: 0;
-        background-color: var(--success);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 12px 20px;
-      }
-
-      .search-group button:last-child {
-        background-color: var(--secondary);
-      }
-
-      .search-group button:last-child:hover {
-        background-color: var(--secondary-hover);
-      }
-
-      .search-group button:hover {
-        background-color: #27ae60;
-      }
-
-      /* --- PREMIUM TABLE SYSTEM --- */
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
-        background: #fff;
-        border-radius: var(--radius);
-        overflow: hidden;
-      }
-
-      th,
-      td {
-        text-align: left;
-        padding: 16px;
-        font-size: 14px;
-      }
-
-      th {
-        background-color: #f8fafc;
-        color: var(--text-muted);
-        font-weight: 600;
-        text-transform: uppercase;
-        font-size: 12px;
-        letter-spacing: 0.5px;
-        border-bottom: 2px solid #e4ecf7;
-      }
-
-      td {
-        border-bottom: 1px solid #edf2f7;
-      }
-
-      tr:last-child td {
-        border-bottom: none;
-      }
-
-      tr {
-        transition:
-          transform .25s ease,
-          background-color .25s ease;
-      }
-
-      tr:hover {
-        transform: scale(1.01);
-      }
-
-      tr:hover td {
-        background-color: #f8fafc;
-      }
-
-      tbody tr {
-        transition:
-          transform .25s ease,
-          background-color .25s ease;
-      }
-
-      tbody tr:hover {
-        transform: translateX(3px);
-      }
-
-      /* --- DYNAMIC STATUS CHIPS --- */
-      .status-msg {
-        font-weight: bold;
-        margin-top: 15px;
-        font-size: 14px;
-        padding: 10px;
-        border-radius: 6px;
-        text-align: center;
-        display: none;
-      }
-
-      .status-msg:not(:empty) {
-        display: block;
-        animation: pulse 0.3s ease-in-out;
-      }
-
-      /* Modern BMI Category Badges */
-      .badge {
-        padding: 6px 12px;
-        border-radius: 20px;
-        font-weight: bold;
-        font-size: 12px;
-        display: inline-block;
-        transition:
-          transform .2s ease,
-          box-shadow .2s ease;
-      }
-
-      .badge:hover {
-        transform: scale(1.08);
-        box-shadow: 0 4px 10px rgba(0, 0, 0, .08);
-      }
-
-      .badge-normal {
-        background-color: #e8f8f0;
-        color: #2ecc71;
-      }
-
-      .badge-underweight {
-        background-color: #fef9e7;
-        color: #f1c40f;
-      }
-
-      .badge-overweight {
-        background-color: #fdf2e9;
-        color: #e67e22;
-      }
-
-      .badge-obese {
-        background-color: #fdedec;
-        color: #e74c3c;
-      }
-
-      .logout-btn {
-        width: auto;
-        padding: 10px 24px;
-        background-color: var(--danger);
-        margin: 0;
-      }
-
-      .logout-btn:hover {
-        background-color: var(--danger-hover);
-      }
-
-      /* ===== Table Row Animation ===== */
-      @keyframes rowFadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .record-row {
-        opacity: 0;
-        animation: rowFadeIn .4s ease forwards;
-      }
-
-      /* --- PREMIUM CARD GRID SYSTEM --- */
-      .records-grid {
-        display: grid;
-        /* This line makes the grid responsive so cards wrap neatly on small screens! */
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 20px;
-        margin-top: 20px;
-      }
-
-      .record-card {
-        background: #ffffff;
-        border: 1px solid #edf2f7;
-        border-radius: var(--radius);
-        padding: 20px;
-        box-shadow: 0 4px 6px rgba(163, 177, 198, 0.1);
-        transition: var(--transition);
-        position: relative;
-        opacity: 0;
-        /* Starts invisible so we can animate it in */
-      }
-
-      .record-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 25px rgba(163, 177, 198, 0.25);
-        border-color: var(--primary);
-      }
-
-      .card-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 15px;
-        border-bottom: 1px solid #edf2f7;
-        padding-bottom: 12px;
-      }
-
-      .card-name {
-        margin: 0;
-        font-size: 18px;
-        color: var(--text-main);
-        font-weight: bold;
-      }
-
-      .card-date {
-        margin-top: 4px;
-        font-size: 12px;
-        color: var(--text-muted);
-      }
-
-      .card-metrics {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 15px;
-      }
-
-      .metric-group p {
-        margin: 0;
-        font-size: 11px;
-        font-weight: 600;
-        text-transform: uppercase;
-        color: var(--text-muted);
-      }
-
-      .metric-group h4 {
-        margin: 4px 0 0 0;
-        font-size: 15px;
-        color: var(--text-main);
-        font-weight: bold;
-      }
-
-      /* --- NEW NAVIGATION STYLES --- */
-      .top-nav {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background: var(--card-bg);
-        padding: 15px 30px;
-        border-radius: var(--radius);
-        box-shadow: var(--shadow);
-        margin-bottom: 30px;
-      }
-
-      .top-nav button {
-        width: auto;
-        /* Overrides the giant width */
-        margin: 0;
-        /* Overrides the giant margins */
-      }
-
-      .nav-tabs {
-        display: flex;
-        gap: 10px;
-      }
-
-      /* ... the rest of the tab-btn CSS ... */
-      /* --- PREMIUM HERO & DASHBOARD STYLES --- */
-      /* --- THE ANIMATED HERO BANNER --- */
-      @keyframes gradientWave {
-        0% {
-          background-position: 0% 50%;
-        }
-
-        50% {
-          background-position: 100% 50%;
-        }
-
-        100% {
-          background-position: 0% 50%;
-        }
-      }
-
-      .hero-banner {
-        /* 1. Structural styling */
-        padding: 40px;
-        border-radius: 12px;
-        color: white;
-        margin-bottom: 25px;
-        /* Glowing drop shadow using the bright cyan */
-        box-shadow: 0 8px 25px rgba(6, 182, 212, 0.25);
-        /* 2. The Ultimate Hybrid Palette */
-        /* Deep blues from your custom image -> Bright cyans from the Oceanic palette */
-        background: linear-gradient(-45deg, #004A61, #00759A, #0891b2, #06b6d4);
-        background-size: 400% 400%;
-        animation: gradientWave 15s ease infinite;
-      }
-
-      .hero-banner h1 {
-        font-size: 32px;
-        font-weight: 700;
-        margin: 0 0 15px 0;
-        letter-spacing: -0.5px;
-      }
-
-      .hero-banner p {
-        font-size: 16px;
-        line-height: 1.6;
-        max-width: 700px;
-        margin: 0 0 30px 0;
-        opacity: 0.9;
-      }
-
-      .hero-buttons {
-        display: flex;
-        gap: 15px;
-      }
-
-      .hero-btn-primary {
-        background: #ffffff;
-        color: #1e3a8a;
-        font-weight: 600;
-        padding: 12px 24px;
-        border-radius: 25px;
-        border: none;
-        width: auto !important;
-      }
-
-      .hero-btn-primary:hover {
-        background: #f8fafc;
-        transform: translateY(-2px);
-      }
-
-      .hero-btn-secondary {
-        background: rgba(255, 255, 255, 0.15);
-        color: #ffffff;
-        font-weight: 600;
-        padding: 12px 24px;
-        border-radius: 25px;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        width: auto !important;
-      }
-
-      .hero-btn-secondary:hover {
-        background: rgba(255, 255, 255, 0.25);
-        transform: translateY(-2px);
-      }
-
-      /* Feature Cards Grid */
-      .feature-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 25px;
-        margin-bottom: 40px;
-      }
-
-      .feature-card {
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
-        border-radius: 16px;
-        padding: 30px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
-        transition: all 0.3s ease;
-      }
-
-      .feature-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 20px rgba(0, 0, 0, 0.05);
-      }
-
-      .feature-icon {
-        width: 45px;
-        height: 45px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 22px;
-        margin-bottom: 20px;
-      }
-
-      .icon-blue {
-        background: #eff6ff;
-      }
-
-      .icon-green {
-        background: #ecfdf5;
-      }
-
-      .icon-purple {
-        background: #f5f3ff;
-      }
-
-      .feature-card h3 {
-        margin: 0 0 10px 0;
-        font-size: 18px;
-        color: #1e293b;
-      }
-
-      .feature-card p {
-        margin: 0;
-        font-size: 14px;
-        line-height: 1.5;
-        color: #64748b;
-      }
-
-      /* THE FIX: Force Hero text to be bright white and stand out */
-      .hero-banner h1,
-      .hero-banner p {
-        color: #ffffff !important;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-      }
-
-      /* THE FIX: Make cards look clickable */
-      .clickable-card {
-        cursor: pointer;
-      }
-
-      /* --- DASHBOARD BUTTONS (Inside the Banner) --- */
-      .hero-buttons {
-        display: flex;
-        gap: 15px;
-        margin-top: 25px;
-      }
-
-      /* The Main Call to Action */
-      .hero-btn-primary {
-        background-color: white;
-        color: #004A61;
-        /* Matches your deepest ocean blue */
-        padding: 12px 28px;
-        border-radius: 8px;
-        border: none;
-        font-weight: 800;
-        font-size: 16px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      }
-
-      .hero-btn-primary:hover {
-        transform: translateY(-3px);
-        /* Lifts up on hover */
-        box-shadow: 0 8px 20px rgba(6, 182, 212, 0.4);
-        /* Cyan glow */
-        color: #00759A;
-      }
-
-      /* The Secondary Glass/Ghost Button */
-      .hero-btn-secondary {
-        background-color: rgba(255, 255, 255, 0.1);
-        /* Semi-transparent glass */
-        color: white;
-        padding: 12px 28px;
-        border-radius: 8px;
-        border: 1px solid rgba(255, 255, 255, 0.4);
-        font-weight: bold;
-        font-size: 16px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        backdrop-filter: blur(4px);
-        /* Blurs the wave behind it slightly */
-      }
-
-      .hero-btn-secondary:hover {
-        background-color: rgba(255, 255, 255, 0.25);
-        border-color: white;
-        transform: translateY(-3px);
-      }
-
-      /* --- DASHBOARD FEATURE CARDS --- */
-      .feature-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 20px;
-        margin-top: 10px;
-      }
-
-      .clickable-card {
-        background: white;
-        padding: 25px;
-        border-radius: 12px;
-        border: 1px solid #e2e8f0;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-      }
-
-      .clickable-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 25px rgba(0, 166, 214, 0.15);
-        /* Soft cyan shadow */
-        border-color: #06b6d4;
-        /* Highlights the border in cyan */
-      }
-
-      .clickable-card h3 {
-        color: #1e293b;
-        margin-bottom: 10px;
-      }
-
-      .clickable-card p {
-        color: #64748b;
-        font-size: 14px;
-        line-height: 1.5;
-      }
-
-      /* --- CALCULATOR PAGE HARMONY --- */
-      /* 1. The Small Icon Box (Top Left of the Card) */
-      .bmi-icon-box {
-        background-color: rgba(6, 182, 212, 0.12) !important;
-        /* Soft tint of your cyan */
-        color: #00759A !important;
-        /* Deep ocean blue for the icon itself */
-      }
-
-      /* 2. Form Inputs & Dropdowns */
-      .calculator-form input,
-      .calculator-form select {
-        border: 1px solid #cbd5e1;
-        border-radius: 8px;
-        padding: 10px;
-        transition: all 0.2s ease;
-      }
-
-      /* The Focus State: Light up with a premium cyan halo when clicked */
-      .calculator-form input:focus,
-      .calculator-form select:focus {
-        outline: none;
-        border-color: #06b6d4 !important;
-        box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.2) !important;
-      }
-
-      /* 3. The Main "Calculate & Save" Button */
-      .btn-calc-primary {
-        background: linear-gradient(135deg, #00759A, #004A61) !important;
-        /* Rich ocean base */
-        color: white !important;
-        border: none;
-        border-radius: 8px;
-        font-weight: 700;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(0, 74, 97, 0.15);
-      }
-
-      .btn-calc-primary:hover {
-        background: linear-gradient(135deg, #06b6d4, #00759A) !important;
-        /* Shifts to gorgeous cyan */
-        transform: translateY(-2px);
-        box-shadow: 0 6px 18px rgba(6, 182, 212, 0.35);
-        /* Glowing cyan shadow */
-      }
-
-      /* 4. The "Clear" Button */
-      .btn-calc-secondary {
-        background-color: #f1f5f9 !important;
-        color: #475569 !important;
-        border: none;
-        border-radius: 8px;
-        font-weight: 600;
-        transition: all 0.2s ease;
-      }
-
-      .btn-calc-secondary:hover {
-        background-color: #e2e8f0 !important;
-        color: #1e293b !important;
-      }
-
-      /* --- PREMIUM LOGO & TOP NAVIGATION --- */
-      .app-logo {
-        margin: 0;
-        font-size: 24px;
-        font-weight: 900;
-        font-family: 'Segoe UI', system-ui, sans-serif;
-        /* Creates a beautiful gradient text effect */
-        background: linear-gradient(to right, #004A61, #06b6d4);
-        -webkit-background-clip: text;
-        background-clip: text;
-        /* <-- ADD THIS LINE! */
-        -webkit-text-fill-color: transparent;
-        letter-spacing: -0.5px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-
-      /* Upgrading the Nav Buttons to Pill Shapes */
-      .nav-btn-clean {
-        background-color: transparent;
-        color: #475569;
-        border: none;
-        padding: 8px 18px;
-        border-radius: 20px;
-        /* Modern pill shape */
-        cursor: pointer;
-        font-weight: 600;
-        font-size: 15px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        transition: all 0.3s ease;
-      }
-
-      .nav-btn-clean:hover {
-        background-color: rgba(6, 182, 212, 0.1);
-        /* Soft cyan background */
-        color: #00759A;
-        /* Deep ocean text */
-        transform: translateY(-1px);
-      }
-
-      .logout-btn-clean {
-        background-color: transparent;
-        color: #64748b;
-        border: none;
-        padding: 8px 18px;
-        border-radius: 20px;
-        cursor: pointer;
-        font-weight: 600;
-        font-size: 15px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        transition: all 0.3s ease;
-      }
-
-      .logout-btn-clean:hover {
-        background-color: #fff1f2;
-        color: #e11d48;
-        /* A more premium, deeper rose-red instead of bright neon red */
-        transform: translateY(-1px);
-      }
-
-      /* --- RECORD CARDS AESTHETIC UPGRADE --- */
-      .history-card-aesthetic {
-        transition: all 0.3s ease !important;
-        cursor: pointer;
-      }
-
-      .history-card-aesthetic:hover {
-        transform: translateY(-4px);
-        /* Adds our signature deep ocean/cyan glow */
-        box-shadow: 0 12px 25px rgba(6, 182, 212, 0.15) !important;
-      }
+        :root {
+            --bg-gradient: linear-gradient(135deg, #f5f7fb 0%, #e4ecf7 100%);
+            --card-bg: #ffffff;
+            --text-main: #2c3e50;
+            --text-muted: #7f8c8d;
+            --primary: #4a90e2;
+            --primary-hover: #357abd;
+            --secondary: #95a5a6;
+            --secondary-hover: #7f8c8d;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --danger-hover: #c0392b;
+            --shadow: 0 10px 30px rgba(163, 177, 198, 0.35);
+            --radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+          }
+    
+          body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            min-height: 100vh;
+            box-sizing: border-box;
+          }
+    
+          /* --- ANIMATIONS --- */
+          @keyframes fadeInUp {
+            from {
+              opacity: 0;
+              transform: translateY(20px);
+            }
+    
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+    
+          @keyframes pulse {
+            0% {
+              transform: scale(1);
+            }
+    
+            50% {
+              transform: scale(1.02);
+            }
+    
+            100% {
+              transform: scale(1);
+            }
+          }
+    
+          /* --- LEAVING ANIMATION FOR THE AUTH BOX --- */
+          @keyframes fadeOutDown {
+            from {
+              opacity: 1;
+              transform: translateY(0);
+            }
+    
+            to {
+              opacity: 0;
+              transform: translateY(30px);
+              /* Slides downward while vanishing */
+            }
+          }
+    
+          .auth-box.fade-out {
+            animation: fadeOutDown 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+          }
+    
+          /* --- STYLIZED AUTH BOX --- */
+          .auth-box {
+            max-width: 400px;
+            margin: 60px auto;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.5s var(--transition);
+          }
+    
+          /* --- DASHBOARD LAYOUT --- */
+          .nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1100px;
+            margin: 0 auto 30px auto;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+            animation: fadeInUp 0.4s var(--transition);
+          }
+    
+          .container {
+            display: flex;
+            gap: 30px;
+            max-width: 1100px;
+            margin: 0 auto;
+          }
+    
+          @media (max-width: 768px) {
+            .container {
+              flex-direction: column;
+            }
+          }
+    
+          .box {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            flex: 1;
+            transition: var(--transition);
+            animation: fadeInUp 0.6s var(--transition);
+          }
+    
+          .box:hover {
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 18px 40px rgba(163, 177, 198, .45);
+          }
+    
+          h1,
+          h2,
+          h3 {
+            margin-top: 0;
+            color: var(--text-main);
+            font-weight: 700;
+          }
+    
+          /* --- SMOOTH INPUTS & BUTTONS --- */
+          label {
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-muted);
+            display: block;
+            margin-top: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+          }
+    
+          input,
+          select,
+          button {
+            width: 100%;
+            padding: 12px 16px;
+            margin: 8px 0;
+            border: 2px solid #e4ecf7;
+            border-radius: var(--radius);
+            box-sizing: border-box;
+            font-size: 15px;
+            transition: var(--transition);
+            outline: none;
+          }
+    
+          input:focus,
+          select:focus {
+            border-color: var(--primary);
+            background-color: #fafbfc;
+            box-shadow: 0 0 0 4px rgba(74, 144, 226, .15);
+            transform: scale(1.01);
+          }
+    
+          button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition:
+              transform .25s ease,
+              box-shadow .25s ease,
+              background-color .25s ease,
+              filter .25s ease;
+          }
+    
+          button {
+            transition:
+              transform .25s ease,
+              box-shadow .25s ease,
+              background-color .25s ease;
+          }
+    
+          button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(74, 144, 226, .25);
+          }
+    
+          button:active {
+            transform: scale(.97);
+          }
+    
+          button:active {
+            transform: scale(.97);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, .18);
+          }
+    
+          .btn-secondary {
+            background-color: var(--secondary);
+            margin-top: 4px;
+          }
+    
+          .btn-secondary:hover {
+            background-color: var(--secondary-hover);
+          }
+    
+          .search-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+          }
+    
+          .search-group input {
+            margin: 0;
+          }
+    
+          .search-group button {
+            min-width: 100px;
+            margin: 0;
+            background-color: var(--success);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 12px 20px;
+          }
+    
+          .search-group button:last-child {
+            background-color: var(--secondary);
+          }
+    
+          .search-group button:last-child:hover {
+            background-color: var(--secondary-hover);
+          }
+    
+          .search-group button:hover {
+            background-color: #27ae60;
+          }
+    
+          /* --- PREMIUM TABLE SYSTEM --- */
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background: #fff;
+            border-radius: var(--radius);
+            overflow: hidden;
+          }
+    
+          th,
+          td {
+            text-align: left;
+            padding: 16px;
+            font-size: 14px;
+          }
+    
+          th {
+            background-color: #f8fafc;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #e4ecf7;
+          }
+    
+          td {
+            border-bottom: 1px solid #edf2f7;
+          }
+    
+          tr:last-child td {
+            border-bottom: none;
+          }
+    
+          tr {
+            transition:
+              transform .25s ease,
+              background-color .25s ease;
+          }
+    
+          tr:hover {
+            transform: scale(1.01);
+          }
+    
+          tr:hover td {
+            background-color: #f8fafc;
+          }
+    
+          tbody tr {
+            transition:
+              transform .25s ease,
+              background-color .25s ease;
+          }
+    
+          tbody tr:hover {
+            transform: translateX(3px);
+          }
+    
+          /* --- DYNAMIC STATUS CHIPS --- */
+          .status-msg {
+            font-weight: bold;
+            margin-top: 15px;
+            font-size: 14px;
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+            display: none;
+          }
+    
+          .status-msg:not(:empty) {
+            display: block;
+            animation: pulse 0.3s ease-in-out;
+          }
+    
+          /* Modern BMI Category Badges */
+          .badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 12px;
+            display: inline-block;
+            transition:
+              transform .2s ease,
+              box-shadow .2s ease;
+          }
+    
+          .badge:hover {
+            transform: scale(1.08);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, .08);
+          }
+    
+          .badge-normal {
+            background-color: #e8f8f0;
+            color: #2ecc71;
+          }
+    
+          .badge-underweight {
+            background-color: #fef9e7;
+            color: #f1c40f;
+          }
+    
+          .badge-overweight {
+            background-color: #fdf2e9;
+            color: #e67e22;
+          }
+    
+          .badge-obese {
+            background-color: #fdedec;
+            color: #e74c3c;
+          }
+    
+          .logout-btn {
+            width: auto;
+            padding: 10px 24px;
+            background-color: var(--danger);
+            margin: 0;
+          }
+    
+          .logout-btn:hover {
+            background-color: var(--danger-hover);
+          }
+    
+          /* ===== Table Row Animation ===== */
+          @keyframes rowFadeIn {
+            from {
+              opacity: 0;
+              transform: translateY(10px);
+            }
+    
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+    
+          .record-row {
+            opacity: 0;
+            animation: rowFadeIn .4s ease forwards;
+          }
+    
+          /* --- PREMIUM CARD GRID SYSTEM --- */
+          .records-grid {
+            display: grid;
+            /* This line makes the grid responsive so cards wrap neatly on small screens! */
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+          }
+    
+          .record-card {
+            background: #ffffff;
+            border: 1px solid #edf2f7;
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(163, 177, 198, 0.1);
+            transition: var(--transition);
+            position: relative;
+            opacity: 0;
+            /* Starts invisible so we can animate it in */
+          }
+    
+          .record-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(163, 177, 198, 0.25);
+            border-color: var(--primary);
+          }
+    
+          .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #edf2f7;
+            padding-bottom: 12px;
+          }
+    
+          .card-name {
+            margin: 0;
+            font-size: 18px;
+            color: var(--text-main);
+            font-weight: bold;
+          }
+    
+          .card-date {
+            margin-top: 4px;
+            font-size: 12px;
+            color: var(--text-muted);
+          }
+    
+          .card-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+          }
+    
+          .metric-group p {
+            margin: 0;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-muted);
+          }
+    
+          .metric-group h4 {
+            margin: 4px 0 0 0;
+            font-size: 15px;
+            color: var(--text-main);
+            font-weight: bold;
+          }
+    
+          /* --- NEW NAVIGATION STYLES --- */
+          .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card-bg);
+            padding: 15px 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+          }
+    
+          .top-nav button {
+            width: auto;
+            /* Overrides the giant width */
+            margin: 0;
+            /* Overrides the giant margins */
+          }
+    
+          .nav-tabs {
+            display: flex;
+            gap: 10px;
+          }
+    
+          /* ... the rest of the tab-btn CSS ... */
+          /* --- PREMIUM HERO & DASHBOARD STYLES --- */
+          /* --- THE ANIMATED HERO BANNER --- */
+          @keyframes gradientWave {
+            0% {
+              background-position: 0% 50%;
+            }
+    
+            50% {
+              background-position: 100% 50%;
+            }
+    
+            100% {
+              background-position: 0% 50%;
+            }
+          }
+    
+          .hero-banner {
+            /* 1. Structural styling */
+            padding: 40px;
+            border-radius: 12px;
+            color: white;
+            margin-bottom: 25px;
+            /* Glowing drop shadow using the bright cyan */
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.25);
+            /* 2. The Ultimate Hybrid Palette */
+            /* Deep blues from your custom image -> Bright cyans from the Oceanic palette */
+            background: linear-gradient(-45deg, #004A61, #00759A, #0891b2, #06b6d4);
+            background-size: 400% 400%;
+            animation: gradientWave 15s ease infinite;
+          }
+    
+          .hero-banner h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 0 0 15px 0;
+            letter-spacing: -0.5px;
+          }
+    
+          .hero-banner p {
+            font-size: 16px;
+            line-height: 1.6;
+            max-width: 700px;
+            margin: 0 0 30px 0;
+            opacity: 0.9;
+          }
+    
+          .hero-buttons {
+            display: flex;
+            gap: 15px;
+          }
+    
+          .hero-btn-primary {
+            background: #ffffff;
+            color: #1e3a8a;
+            font-weight: 600;
+            padding: 12px 24px;
+            border-radius: 25px;
+            border: none;
+            width: auto !important;
+          }
+    
+          .hero-btn-primary:hover {
+            background: #f8fafc;
+            transform: translateY(-2px);
+          }
+    
+          .hero-btn-secondary {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            font-weight: 600;
+            padding: 12px 24px;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            width: auto !important;
+          }
+    
+          .hero-btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+          }
+    
+          /* Feature Cards Grid */
+          .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+          }
+    
+          .feature-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+            transition: all 0.3s ease;
+          }
+    
+          .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.05);
+          }
+    
+          .feature-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin-bottom: 20px;
+          }
+    
+          .icon-blue {
+            background: #eff6ff;
+          }
+    
+          .icon-green {
+            background: #ecfdf5;
+          }
+    
+          .icon-purple {
+            background: #f5f3ff;
+          }
+    
+          .feature-card h3 {
+            margin: 0 0 10px 0;
+            font-size: 18px;
+            color: #1e293b;
+          }
+    
+          .feature-card p {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #64748b;
+          }
+    
+          /* THE FIX: Force Hero text to be bright white and stand out */
+          .hero-banner h1,
+          .hero-banner p {
+            color: #ffffff !important;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+          }
+    
+          /* THE FIX: Make cards look clickable */
+          .clickable-card {
+            cursor: pointer;
+          }
+    
+          /* --- DASHBOARD BUTTONS (Inside the Banner) --- */
+          .hero-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+          }
+    
+          /* The Main Call to Action */
+          .hero-btn-primary {
+            background-color: white;
+            color: #004A61;
+            /* Matches your deepest ocean blue */
+            padding: 12px 28px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 800;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+          }
+    
+          .hero-btn-primary:hover {
+            transform: translateY(-3px);
+            /* Lifts up on hover */
+            box-shadow: 0 8px 20px rgba(6, 182, 212, 0.4);
+            /* Cyan glow */
+            color: #00759A;
+          }
+    
+          /* The Secondary Glass/Ghost Button */
+          .hero-btn-secondary {
+            background-color: rgba(255, 255, 255, 0.1);
+            /* Semi-transparent glass */
+            color: white;
+            padding: 12px 28px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(4px);
+            /* Blurs the wave behind it slightly */
+          }
+    
+          .hero-btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.25);
+            border-color: white;
+            transform: translateY(-3px);
+          }
+    
+          /* --- DASHBOARD FEATURE CARDS --- */
+          .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 10px;
+          }
+    
+          .clickable-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+          }
+    
+          .clickable-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 166, 214, 0.15);
+            /* Soft cyan shadow */
+            border-color: #06b6d4;
+            /* Highlights the border in cyan */
+          }
+    
+          .clickable-card h3 {
+            color: #1e293b;
+            margin-bottom: 10px;
+          }
+    
+          .clickable-card p {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.5;
+          }
+    
+          /* --- CALCULATOR PAGE HARMONY --- */
+          /* 1. The Small Icon Box (Top Left of the Card) */
+          .bmi-icon-box {
+            background-color: rgba(6, 182, 212, 0.12) !important;
+            /* Soft tint of your cyan */
+            color: #00759A !important;
+            /* Deep ocean blue for the icon itself */
+          }
+    
+          /* 2. Form Inputs & Dropdowns */
+          .calculator-form input,
+          .calculator-form select {
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 10px;
+            transition: all 0.2s ease;
+          }
+    
+          /* The Focus State: Light up with a premium cyan halo when clicked */
+          .calculator-form input:focus,
+          .calculator-form select:focus {
+            outline: none;
+            border-color: #06b6d4 !important;
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.2) !important;
+          }
+    
+          /* 3. The Main "Calculate & Save" Button */
+          .btn-calc-primary {
+            background: linear-gradient(135deg, #00759A, #004A61) !important;
+            /* Rich ocean base */
+            color: white !important;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 74, 97, 0.15);
+          }
+    
+          .btn-calc-primary:hover {
+            background: linear-gradient(135deg, #06b6d4, #00759A) !important;
+            /* Shifts to gorgeous cyan */
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(6, 182, 212, 0.35);
+            /* Glowing cyan shadow */
+          }
+    
+          /* 4. The "Clear" Button */
+          .btn-calc-secondary {
+            background-color: #f1f5f9 !important;
+            color: #475569 !important;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+          }
+    
+          .btn-calc-secondary:hover {
+            background-color: #e2e8f0 !important;
+            color: #1e293b !important;
+          }
+    
+          /* --- PREMIUM LOGO & TOP NAVIGATION --- */
+          .app-logo {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 900;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            /* Creates a beautiful gradient text effect */
+            background: linear-gradient(to right, #004A61, #06b6d4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            /* <-- ADD THIS LINE! */
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+          }
+    
+          /* Upgrading the Nav Buttons to Pill Shapes */
+          .nav-btn-clean {
+            background-color: transparent;
+            color: #475569;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 20px;
+            /* Modern pill shape */
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+          }
+    
+          .nav-btn-clean:hover {
+            background-color: rgba(6, 182, 212, 0.1);
+            /* Soft cyan background */
+            color: #00759A;
+            /* Deep ocean text */
+            transform: translateY(-1px);
+          }
+    
+          .logout-btn-clean {
+            background-color: transparent;
+            color: #64748b;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+          }
+    
+          .logout-btn-clean:hover {
+            background-color: #fff1f2;
+            color: #e11d48;
+            /* A more premium, deeper rose-red instead of bright neon red */
+            transform: translateY(-1px);
+          }
+    
+          /* --- RECORD CARDS AESTHETIC UPGRADE --- */
+          .history-card-aesthetic {
+            transition: all 0.3s ease !important;
+            cursor: pointer;
+          }
+    
+          .history-card-aesthetic:hover {
+            transform: translateY(-4px);
+            /* Adds our signature deep ocean/cyan glow */
+            box-shadow: 0 12px 25px rgba(6, 182, 212, 0.15) !important;
+          }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  </head>
-  <body>
+</head>
+
+<body>
     <!-- SCREEN 1: AUTHENTICATION (VISIBLE BY DEFAULT) -->
     <div id="authContainer" class="auth-box">
-      <h2 id="authTitle">Login to Health Tracker</h2>
-      <form id="authForm">
-        <label>Email Address:</label>
-        <input type="email" id="authEmail" required placeholder="Enter email">
-        <label>Password (min 6 chars):</label>
-        <input type="password" id="authPassword" required placeholder="Enter password">
-        <button type="submit" id="mainAuthBtn">Login</button>
-        <button type="button" class="btn-secondary" id="toggleAuthBtn" onclick="toggleAuthMode()">Create an Account</button>
-      </form>
-      <div id="authStatus" class="status-msg"></div>
+        <h2 id="authTitle">Login to Health Tracker</h2>
+        <form id="authForm">
+            <label>Email Address:</label>
+            <input type="email" id="authEmail" required placeholder="Enter email">
+            <label>Password (min 6 chars):</label>
+            <input type="password" id="authPassword" required placeholder="Enter password">
+            <button type="submit" id="mainAuthBtn">Login</button>
+            <button type="button" class="btn-secondary" id="toggleAuthBtn" onclick="toggleAuthMode()">Create an Account</button>
+        </form>
+        <div id="authStatus" class="status-msg"></div>
     </div>
     <!-- SCREEN 2: MAIN DASHBOARD (HIDDEN UNTIL LOGIN) -->
     <div id="dashboardContainer" style="display: none;">
-      <div class="top-nav" style="display: flex; justify-content: space-between; align-items: center;">
-        <h2 class="app-logo">
+        <div class="top-nav" style="display: flex; justify-content: space-between; align-items: center;">
+            <h2 class="app-logo">
           <span>✨</span> HealthTrack
         </h2>
-        <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end;">
-          <button class="nav-btn-clean" onclick="switchTab('dash')">
-            <span>㗊</span> Dashboard </button>
-          <button class="logout-btn-clean" onclick="handleLogout()">
-            <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;">
+            <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end;">
+                <button class="nav-btn-clean" onclick="switchTab('dash')">
+                    <span>㗊</span> Dashboard </button>
+                <button class="logout-btn-clean" onclick="handleLogout()">
+                    <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;">
     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
     <polyline points="16 17 21 12 16 7"></polyline>
     <line x1="21" y1="12" x2="9" y2="12"></line>
 </svg></span> Logout </button>
+            </div>
         </div>
-      </div>
-      <div class="container" style="flex-direction: column; max-width: 1100px; margin: 0 auto;">
-        <div id="view-dash" class="view-page active-page">
-          <div class="hero-banner">
-            <h1>Modern Health & BMI Tracker</h1>
-            <p>Monitor your body mass index, track your health metrics over time, and get personalized insights using our AI-powered medical assistant.</p>
-            <div class="hero-buttons">
-              <button class="hero-btn-primary" onclick="switchTab('calc')">Calculate BMI →</button>
-              <button class="hero-btn-secondary" onclick="switchTab('records')">View Records</button>
-            </div>
-          </div>
-          <div class="feature-grid">
-            <div class="feature-card clickable-card" onclick="switchTab('records')">
-              <div class="feature-icon icon-blue">📅</div>
-              <h3>Health Check</h3>
-              <p>Search by date to instantly check your historical health status and see if you were in the healthy range.</p>
-            </div>
-            <div class="feature-card clickable-card" onclick="switchTab('trends')">
-              <div class="feature-icon icon-green">📈</div>
-              <h3>Analyze Trends</h3>
-              <p>View detailed statistics, charts, and distribution metrics of your historical data.</p>
-            </div>
-            <div class="feature-card clickable-card" onclick="exportJSON()">
-              <div class="feature-icon icon-purple">💾</div>
-              <h3>Export Data</h3>
-              <p>Download your complete health history as a secure JSON file.</p>
-            </div>
-          </div>
-        </div>
-        <div id="view-calc" class="view-page" style="display: none;">
-          <div style="display: flex; gap: 20px; max-width: 900px; margin: 0 auto; flex-wrap: wrap;">
-            <div class="box" style="flex: 1; min-width: 320px;">
-              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
-                <div style="background: #e2e8f0; padding: 10px; border-radius: 8px; font-size: 20px;">🔄</div>
-                <h2 style="margin: 0;">BMI Calculator</h2>
-              </div>
-              <p style="color: #64748b; margin-bottom: 20px;">Enter your details to calculate and save your BMI</p>
-              <form id="healthForm">
-                <label>Roll Number:</label>
-                <input type="number" id="rollNo" required min="1">
-                <label>Full Name:</label>
-                <input type="text" id="name" required minlength="1">
-                <label>Age (Years):</label>
-                <input type="number" id="age" required min="1" placeholder="e.g. 25">
-                <label>Gender:</label>
-                <select id="gender" required>
-                  <option value="" disabled selected>Select Gender</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                  <option value="Other">Other</option>
-                </select>
-                <label>Weight (kg):</label>
-                <input type="number" id="weight" step="0.1" required min="0.1">
-                <label>Height (cm):</label>
-                <input type="number" id="height" step="0.1" required min="0.1">
-                <div style="display: flex; gap: 10px; margin-top: 15px;">
-                  <button type="submit" class="btn-calc-primary" style="flex: 2; padding: 12px;">Calculate & Save</button>
-                  <button type="reset" class="btn-calc-secondary" style="flex: 1; padding: 12px;">Clear</button>
+        <div class="container" style="flex-direction: column; max-width: 1100px; margin: 0 auto;">
+            <div id="view-dash" class="view-page active-page">
+                <div class="hero-banner">
+                    <h1>Modern Health & BMI Tracker</h1>
+                    <p>Monitor your body mass index, track your health metrics over time, and get personalized insights using our AI-powered medical assistant.</p>
+                    <div class="hero-buttons">
+                        <button class="hero-btn-primary" onclick="switchTab('calc')">Calculate BMI →</button>
+                        <button class="hero-btn-secondary" onclick="switchTab('records')">View Records</button>
+                    </div>
                 </div>
-              </form>
+                <div class="feature-grid">
+                    <div class="feature-card clickable-card" onclick="switchTab('records')">
+                        <div class="feature-icon icon-blue">📅</div>
+                        <h3>Health Check</h3>
+                        <p>Search by date to instantly check your historical health status and see if you were in the healthy range.</p>
+                    </div>
+                    <div class="feature-card clickable-card" onclick="switchTab('trends')">
+                        <div class="feature-icon icon-green">📈</div>
+                        <h3>Analyze Trends</h3>
+                        <p>View detailed statistics, charts, and distribution metrics of your historical data.</p>
+                    </div>
+                    <div class="feature-card clickable-card" onclick="exportJSON()">
+                        <div class="feature-icon icon-purple">💾</div>
+                        <h3>Export Data</h3>
+                        <p>Download your complete health history as a secure JSON file.</p>
+                    </div>
+                </div>
             </div>
-            <div class="box" style="flex: 1; min-width: 320px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background-color: #f8fafc; border: 2px dashed #e2e8f0;">
-              <div id="instantResultBox">
-                <div style="font-size: 50px; color: #cbd5e1; margin-bottom: 15px;">⚖️</div>
-                <p style="color: #64748b; font-size: 16px;">Fill out the form and calculate your BMI to see results here.</p>
-              </div>
+            <div id="view-calc" class="view-page" style="display: none;">
+                <div style="display: flex; gap: 20px; max-width: 900px; margin: 0 auto; flex-wrap: wrap;">
+                    <div class="box" style="flex: 1; min-width: 320px;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                            <div style="background: #e2e8f0; padding: 10px; border-radius: 8px; font-size: 20px;">🔄</div>
+                            <h2 style="margin: 0;">BMI Calculator</h2>
+                        </div>
+                        <p style="color: #64748b; margin-bottom: 20px;">Enter your details to calculate and save your BMI</p>
+                        <form id="healthForm">
+                            <label>Roll Number:</label>
+                            <input type="number" id="rollNo" required min="1">
+                            <label>Full Name:</label>
+                            <input type="text" id="name" required minlength="1">
+                            <label>Age (Years):</label>
+                            <input type="number" id="age" required min="1" placeholder="e.g. 25">
+                            <label>Gender:</label>
+                            <select id="gender" required>
+                                <option value="" disabled selected>Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <label>Weight (kg):</label>
+                            <input type="number" id="weight" step="0.1" required min="0.1">
+                            <label>Height (cm):</label>
+                            <input type="number" id="height" step="0.1" required min="0.1">
+                            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                                <button type="submit" class="btn-calc-primary" style="flex: 2; padding: 12px;">Calculate & Save</button>
+                                <button type="reset" class="btn-calc-secondary" style="flex: 1; padding: 12px;">Clear</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="box" style="flex: 1; min-width: 320px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background-color: #f8fafc; border: 2px dashed #e2e8f0;">
+                        <div id="instantResultBox">
+                            <div style="font-size: 50px; color: #cbd5e1; margin-bottom: 15px;">⚖️</div>
+                            <p style="color: #64748b; font-size: 16px;">Fill out the form and calculate your BMI to see results here.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
+            <div id="view-records" class="view-page" style="display: none;">
+                <div class="box">
+                    <h2>Your Health History</h2>
+                    <div class="search-group" style="display: flex; gap: 10px; margin-bottom: 20px;">
+                        <input type="date" id="searchDate" style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 6px; outline: none;">
+                        <button type="button" class="btn-calc-primary" onclick="searchRecordsByDate()" style="padding: 10px 25px;">Search</button>
+                        <button type="button" class="btn-calc-secondary" onclick="clearDateSearch()" style="padding: 10px 25px;">Clear</button>
+                    </div>
+                    <div id="searchMessage" style="color: #e74c3c; font-weight: bold; font-size: 14px;"></div>
+                    <div id="recordsGrid" class="records-grid"></div>
+                </div>
+            </div>
+            <div id="view-trends" class="view-page" style="display: none;">
+                <div class="box">
+                    <h2>BMI Progression Chart</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 20px;">Watch your health metrics change over time.</p>
+                    <div style="position: relative; height:400px; width:100%">
+                        <canvas id="bmiChart"></canvas>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div id="view-records" class="view-page" style="display: none;">
-          <div class="box">
-            <h2>Your Health History</h2>
-            <div class="search-group" style="display: flex; gap: 10px; margin-bottom: 20px;">
-              <input type="date" id="searchDate" style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 6px; outline: none;">
-              <button type="button" class="btn-calc-primary" onclick="searchRecordsByDate()" style="padding: 10px 25px;">Search</button>
-              <button type="button" class="btn-calc-secondary" onclick="clearDateSearch()" style="padding: 10px 25px;">Clear</button>
-            </div>
-            <div id="searchMessage" style="color: #e74c3c; font-weight: bold; font-size: 14px;"></div>
-            <div id="recordsGrid" class="records-grid"></div>
-          </div>
-        </div>
-        <div id="view-trends" class="view-page" style="display: none;">
-          <div class="box">
-            <h2>BMI Progression Chart</h2>
-            <p style="color: var(--text-muted); margin-bottom: 20px;">Watch your health metrics change over time.</p>
-            <div style="position: relative; height:400px; width:100%">
-              <canvas id="bmiChart"></canvas>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
     <script src="script.js"></script>
-  </body>
+</body>
+
 </html>
