@@ -408,43 +408,26 @@ function renderChart(records) {
                 backgroundColor: 'rgba(37, 99, 235, 0.1)',
                 borderWidth: 3,
                 pointBackgroundColor: '#10b981', // Green dots
-                pointRadius: 4,
-                pointHoverRadius: 6,
-                borderWidth: 3,
+                pointRadius: 5,
                 fill: true,
-                tension: 0.45 // Makes the line slightly curved and smooth
+                tension: 0.3 // Makes the line slightly curved and smooth
             }]
         },
         options: {
-            animations: {
-    x: {
-        type: 'number',
-        easing: 'easeOutQuart', // 'easeOutQuart' is smoother than 'easeInOutCubic' for UI
-        duration: 1500,         // Reduced to 1.5s for a punchier feel
-        from: NaN,
-        delay(ctx) {
-            return ctx.index * 100; // Slightly more delay to emphasize the stagger
-        }
-    },
-    y: {
-        type: 'number',
-        easing: 'easeOutQuart',
-        duration: 1500,
-        from(ctx) {
-            // Your existing logic keeps the "drawing" effect intact
-            if (ctx.index === 0) {
-                return ctx.chart.scales.y.getPixelForValue(ctx.dataset.data[0]);
+            animation: {
+                duration: 2000, // Takes exactly 2 seconds to draw the graph
+                easing: 'easeOutQuart', // Starts fast, then smoothly decelerates
+                delay: 300 // Slight pause so the user can see it start after clicking the tab
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    suggestedMin: 15, // Keeps the graph focused on normal BMI ranges
+                    suggestedMax: 35
+                }
             }
-            return ctx.chart
-                .getDatasetMeta(ctx.datasetIndex)
-                .data[ctx.index - 1]
-                .getProps(['y'], true).y;
-        },
-        delay(ctx) {
-            return ctx.index * 100;
-        }
-    }
-}
         }
     });
 }
