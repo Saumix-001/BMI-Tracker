@@ -417,33 +417,34 @@ function renderChart(records) {
         },
         options: {
             animations: {
-                x: {
-                    type: 'number',
-                    easing: 'easeInOutCubic',
-                    duration: 2500,
-                    from: NaN,
-                    delay(ctx) {
-                        return ctx.index * 80;
-                    }
-                },
-                y: {
-                    type: 'number',
-                    easing: 'easeInOutCubic',
-                    duration: 2500,
-                    from(ctx) {
-                        if (ctx.index === 0) {
-                            return ctx.chart.scales.y.getPixelForValue(ctx.dataset.data[0]);
-                        }
-                        return ctx.chart
-                            .getDatasetMeta(ctx.datasetIndex)
-                            .data[ctx.index - 1]
-                            .getProps(['y'], true).y;
-                    },
-                    delay(ctx) {
-                        return ctx.index * 80;
-                    }
-                }
+    x: {
+        type: 'number',
+        easing: 'easeOutQuart', // 'easeOutQuart' is smoother than 'easeInOutCubic' for UI
+        duration: 1500,         // Reduced to 1.5s for a punchier feel
+        from: NaN,
+        delay(ctx) {
+            return ctx.index * 100; // Slightly more delay to emphasize the stagger
+        }
+    },
+    y: {
+        type: 'number',
+        easing: 'easeOutQuart',
+        duration: 1500,
+        from(ctx) {
+            // Your existing logic keeps the "drawing" effect intact
+            if (ctx.index === 0) {
+                return ctx.chart.scales.y.getPixelForValue(ctx.dataset.data[0]);
             }
+            return ctx.chart
+                .getDatasetMeta(ctx.datasetIndex)
+                .data[ctx.index - 1]
+                .getProps(['y'], true).y;
+        },
+        delay(ctx) {
+            return ctx.index * 100;
+        }
+    }
+}
         }
     });
 }
