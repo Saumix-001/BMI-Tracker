@@ -414,7 +414,28 @@ function renderChart(records) {
             }]
         },
         options: {
-            animation: false,
+    animations: {
+        x: {
+            type: 'number',
+            easing: 'easeOutQuint', // Much smoother, more "expensive" feel
+            duration: 1000,         // Fast, punchy 1s duration
+            from: NaN
+        },
+        y: {
+            type: 'number',
+            easing: 'easeOutQuint',
+            duration: 1000,
+            from(ctx) {
+            // This ensures the line starts from the baseline (bottom)
+            return ctx.chart.scales.y.getPixelForValue(0); 
+            }
+        },
+        // Adding an opacity fade for that "premium glow" effect
+        active: {
+            duration: 400,
+            easing: 'easeOutQuad'
+        }
+    },
             responsive: true,
             maintainAspectRatio: false,
             scales: {
