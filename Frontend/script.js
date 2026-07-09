@@ -427,11 +427,15 @@ function renderChart(records) {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                animations: {
+                animation: { // <-- Make sure this is singular!
+                    duration: 1500,
+                    easing: 'easeOutQuint'
+                },
+                animations: { // <-- This one stays plural
                     x: {
                         type: 'number',
                         easing: 'easeOutQuint',
-                        duration: 1500, // Let's make it 1.5s so it's visible
+                        duration: 1500,
                         from: NaN
                     },
                     y: {
@@ -439,8 +443,8 @@ function renderChart(records) {
                         easing: 'easeOutQuint',
                         duration: 1500,
                         from(ctx) {
-                            // This forces the line to start from the bottom axis
-                            return ctx.chart.scales.y.getPixelForValue(ctx.chart.scales.y.min);
+                            // Clean, valid syntax here:
+                            return ctx.chart.scales.y.getPixelForValue(15);
                         }
                     }
                 },
