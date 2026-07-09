@@ -404,10 +404,10 @@ function renderChart(records) {
             datasets: [{
                 label: 'Your BMI',
                 data: bmis,
-                borderColor: '#2563eb', // Brand blue
-                backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                borderColor: '#06b6d4',          // Your vibrant Cyan
+                backgroundColor: 'rgba(6, 182, 212, 0.15)', // Light Cyan fill with a nice glow
                 borderWidth: 3,
-                pointBackgroundColor: '#10b981', // Green dots
+                pointBackgroundColor: '#00759A', // Your Deep Ocean blue for the points
                 pointRadius: 5,
                 fill: true,
                 tension: 0.3 // Makes the line slightly curved and smooth
