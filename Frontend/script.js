@@ -416,7 +416,7 @@ function renderChart(records) {
         options: {
             animation: {
                 duration: 2000, // Takes exactly 2 seconds to draw the graph
-                easing: 'easeInQuart', // Starts fast, then smoothly decelerates
+                easing: 'easeInCubic',
                 delay: 400 // Slight pause so the user can see it start after clicking the tab
             },
             responsive: true,
