@@ -351,8 +351,8 @@ function renderTable(records) {
 // --- CRASH-PROOF TAB SWITCHING LOGIC ---
 function switchTab(tabId) {
     // 1. Create lists of all possible rooms and buttons
-    const allRooms = ["view-dash", "view-calc", "view-records", "view-trends", "view-profile"];
-    const allTabs = ["tab-dash", "tab-calc", "tab-records", "tab-trends", "tab-profile"];
+    const allRooms = ["view-dash", "view-calc", "view-records", "view-trends"];
+    const allTabs = ["tab-dash", "tab-calc", "tab-records", "tab-trends"];
 
     // 2. Safely hide all rooms (only if they exist!)
     allRooms.forEach(roomId => {
