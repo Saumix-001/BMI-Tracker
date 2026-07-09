@@ -417,13 +417,13 @@ function renderChart(records) {
             animation: {
                 duration: 2000, // Takes exactly 2 seconds to draw the graph
                 easing: 'easeOutQuart', // Starts fast, then smoothly decelerates
-                delay: 300 // Slight pause so the user can see it start after clicking the tab
+                delay: 400 // Slight pause so the user can see it start after clicking the tab
             },
             responsive: true,
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
             scales: {
                 y: {
-                    beginAtZero: true,
+                    beginAtZero: false,
                     suggestedMin: 15, // Keeps the graph focused on normal BMI ranges
                     suggestedMax: 35
                 }
