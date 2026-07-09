@@ -16,9 +16,9 @@ function toggleAuthMode() {
     const mainAuthBtn = document.getElementById("mainAuthBtn");
     const toggleAuthBtn = document.getElementById("toggleAuthBtn");
     const authStatus = document.getElementById("authStatus");
-    
+
     authStatus.innerText = "";
-    
+
     if (isLoginMode) {
         authTitle.innerText = "Login to Health Tracker";
         mainAuthBtn.innerText = "Login";
@@ -39,12 +39,17 @@ document.getElementById("authForm").addEventListener("submit", async (e) => {
 
     // Choose route endpoint dynamically based on current UI mode state
     const endpoint = isLoginMode ? "/login" : "/register";
-    
+
     try {
         const response = await fetch(`${API_PROD_URL}${endpoint}`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password })
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email,
+                password
+            })
         });
 
         const data = await response.json();
@@ -52,17 +57,17 @@ document.getElementById("authForm").addEventListener("submit", async (e) => {
         if (response.ok) {
             statusDiv.style.color = "green";
             statusDiv.innerText = isLoginMode ? "Login successful!" : "Registration successful! Switching to login...";
-            
+
             if (isLoginMode) {
                 // Save session token locally in the web browser memory context
                 sessionStorage.setItem("current_user_id", data.user_id);
-                
+
                 // --- MODIFICATION 1: TRACE AND APPLY EXIT ANIMATION ---
                 const authBox = document.getElementById("authContainer");
                 authBox.classList.add("fade-out"); // Starts the sliding exit animation
-                
+
                 // Wait exactly 400ms for the animation to play before hiding the box completely
-                setTimeout(showDashboard, 400); 
+                setTimeout(showDashboard, 400);
             } else {
                 // Auto switch back to login mode profile view 
                 setTimeout(() => {
@@ -86,7 +91,7 @@ function showDashboard() {
     const authBox = document.getElementById("authContainer");
     authBox.style.display = "none";
     authBox.classList.remove("fade-out"); // Removes class so it resets for future logouts
-    
+
     document.getElementById("dashboardContainer").style.display = "block";
     fetchUserRecords();
 }
@@ -107,15 +112,15 @@ document.getElementById("healthForm").addEventListener("submit", async (e) => {
     const currentUserId = sessionStorage.getItem("current_user_id");
 
     const payload = {
-        user_id: currentUserId, 
+        user_id: currentUserId,
         roll_no: parseInt(document.getElementById("rollNo").value),
         name: document.getElementById("name").value.trim(),
-        
+
         // --- ADD THESE TWO NEW LINES ---
         age: parseInt(document.getElementById("age").value),
         gender: document.getElementById("gender").value,
         // -------------------------------
-        
+
         weight_kg: parseFloat(document.getElementById("weight").value),
         height_cm: parseFloat(document.getElementById("height").value)
     };
@@ -140,23 +145,23 @@ document.getElementById("healthForm").addEventListener("submit", async (e) => {
 
             // 2. Grab the BMI and Category
             const returnedBmi = parseFloat(data.bmi);
-            
+
             // 3. Determine the color badge
             let badgeColor = "#10b981"; // Default Green
-            let statusText = data.category || "Healthy Range"; 
-            
-            if (returnedBmi < 18.5) { 
+            let statusText = data.category || "Healthy Range";
+
+            if (returnedBmi < 18.5) {
                 badgeColor = "#f59e0b"; // Orange for underweight
             } else if (returnedBmi >= 25 && returnedBmi < 30) {
                 badgeColor = "#f97316"; // Dark orange for overweight
-            } else if (returnedBmi >= 30) { 
+            } else if (returnedBmi >= 30) {
                 badgeColor = "#ef4444"; // Red for obese
             }
 
             // 4. Inject the stunning visual result into the right side!
             // 4. Inject the stunning visual result into the right side!
-        // 4. Inject the stunning visual result into the right side!
-        resultBox.innerHTML = `
+            // 4. Inject the stunning visual result into the right side!
+            resultBox.innerHTML = `
             <h3 style="color: #1e293b; margin-bottom: 5px;">Your Results</h3>
             <div style="font-size: 48px; font-weight: 900; color: #2563eb; margin: 10px 0;">${returnedBmi}</div>
             <span style="background-color: ${badgeColor}; color: white; padding: 6px 16px; border-radius: 20px; font-weight: bold; font-size: 14px;">
@@ -175,7 +180,7 @@ document.getElementById("healthForm").addEventListener("submit", async (e) => {
     } catch (err) {
         // Show connection errors directly in the new result box
         const resultBox = document.getElementById("instantResultBox");
-        if(resultBox) {
+        if (resultBox) {
             resultBox.innerHTML = `<p style="color: #ef4444; font-weight: bold;">Error: Cannot connect to backend server.</p>`;
         }
     }
@@ -191,16 +196,16 @@ async function fetchUserRecords() {
             headers: {
                 "Content-Type": "application/json",
                 // Pass the custom header so the backend bouncer lets us in!
-                "x-user-id": currentUserId 
+                "x-user-id": currentUserId
             }
         });
 
         if (response.ok) {
             const records = await response.json();
-            
+
             // 🚨 ADD THIS LINE TO SPY ON THE FIRST RECORD:
-            console.log("Spying on Backend Data:", records[0]); 
-            
+            console.log("Spying on Backend Data:", records[0]);
+
             renderTable(records);
             renderChart(records);
         } else {
@@ -214,10 +219,10 @@ async function fetchUserRecords() {
 // Search through user records securely
 // Upgraded function to query the API using the selected calendar date
 async function searchRecordsByDate() {
-    const searchDate = document.getElementById("searchDate").value; 
+    const searchDate = document.getElementById("searchDate").value;
     const currentUserId = sessionStorage.getItem("current_user_id");
     const msgDiv = document.getElementById("searchMessage");
-    
+
     // Clear out any previous warning text
     msgDiv.innerText = "";
 
@@ -233,7 +238,8 @@ async function searchRecordsByDate() {
                 "Content-Type": "application/json",
                 "x-user-id": currentUserId
             }
-        });        const data = await response.json();
+        });
+        const data = await response.json();
 
         if (response.ok) {
             // If data is found, show it cleanly in the table matrix
@@ -242,9 +248,9 @@ async function searchRecordsByDate() {
             // KEY FIX: Instead of clearing the table with renderTable([]), 
             // we leave the old logs on screen and print a warning text.
             msgDiv.innerText = `❌ No logs found for ${searchDate}. Showing full history instead.`;
-            
+
             // Proactively keep their history visible so it doesn't vanish
-            fetchUserRecords(); 
+            fetchUserRecords();
         }
     } catch (err) {
         msgDiv.innerText = "🔌 Server link lost. Check your Uvicorn terminal.";
@@ -254,13 +260,13 @@ async function searchRecordsByDate() {
 
 function clearDateSearch() {
     // Reset the input calendar box to blank values
-    document.getElementById("searchDate").value = ""; 
-    
+    document.getElementById("searchDate").value = "";
+
     // Wipe away any red error notification text strings
-    document.getElementById("searchMessage").innerText = ""; 
-    
+    document.getElementById("searchMessage").innerText = "";
+
     // Reload all entries instantly without making the user manually hit refresh
-    fetchUserRecords(); 
+    fetchUserRecords();
 }
 
 
@@ -286,21 +292,21 @@ function renderTable(records) {
 
         if (record.bmi < 18.5) {
             statusText = "Underweight";
-            badgeColor = "#f59e0b"; 
+            badgeColor = "#f59e0b";
         } else if (record.bmi >= 18.5 && record.bmi <= 24.9) {
             statusText = "Healthy Range";
-            badgeColor = "#10b981"; 
+            badgeColor = "#10b981";
         } else if (record.bmi >= 25 && record.bmi <= 29.9) {
             statusText = "Overweight";
-            badgeColor = "#f97316"; 
+            badgeColor = "#f97316";
         } else {
             statusText = "Needs Attention";
-            badgeColor = "#ef4444"; 
+            badgeColor = "#ef4444";
         }
 
         const card = document.createElement("div");
-        
-        
+
+
         // 1. Initial State: Invisible and pushed down 20 pixels
         card.style.cssText = `
             background: white; 
@@ -329,7 +335,7 @@ function renderTable(records) {
                 <span><strong>Weight:</strong> ${displayWeight} kg</span>
             </div>
         `;
-        
+
         grid.appendChild(card);
 
         // 2. The Magic Trick: Force the animation to trigger AFTER the card is on the page
@@ -337,7 +343,7 @@ function renderTable(records) {
         setTimeout(() => {
             card.style.opacity = "1";
             card.style.transform = "translateY(0)";
-        }, index * 100); 
+        }, index * 100);
     });
 }
 // --- NEW TAB SWITCHING LOGIC ---
@@ -355,7 +361,7 @@ function switchTab(tabId) {
             roomElement.style.display = "none";
         }
     });
-    
+
     // 3. Safely turn off all buttons (only if they exist!)
     allTabs.forEach(btnId => {
         const btnElement = document.getElementById(btnId);
@@ -367,28 +373,29 @@ function switchTab(tabId) {
     // 4. Turn on the specific room and button the user clicked
     const selectedRoom = document.getElementById("view-" + tabId);
     const selectedTab = document.getElementById("tab-" + tabId);
-    
+
     if (selectedRoom) selectedRoom.style.display = "block";
     if (selectedTab) selectedTab.classList.add("active");
 
     // 5. If they open Records or Trends, pull fresh data!
-// 5. If they open Records or Trends, pull fresh data!
-if (tabId === 'records' || tabId === 'trends') {
-    if (typeof fetchUserRecords === "function") {
-        // We modify this to ensure the chart renders AFTER the data is ready
-        fetchUserRecords().then(data => {
-            if (tabId === 'trends') {
-                renderChart(data); // Pass the data directly!
-            }
-        });
+    // 5. If they open Records or Trends, pull fresh data!
+    if (tabId === 'records' || tabId === 'trends') {
+        if (typeof fetchUserRecords === "function") {
+            // We modify this to ensure the chart renders AFTER the data is ready
+            fetchUserRecords().then(data => {
+                if (tabId === 'trends') {
+                    renderChart(data); // Pass the data directly!
+                }
+            });
+        }
     }
-}}
+}
 // Variable to keep track of the chart so we can update it without glitches
 let myBmiChart = null;
 
 function renderChart(records) {
     const ctx = document.getElementById('bmiChart').getContext('2d');
-    
+
     // Sort records chronologically
     const sortedRecords = [...records].sort((a, b) => new Date(a.date) - new Date(b.date));
     const dates = sortedRecords.map(r => r.date);
@@ -418,40 +425,40 @@ function renderChart(records) {
                 }]
             },
             options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    animations: {
-        x: {
-            type: 'number',
-            easing: 'easeOutQuint',
-            duration: 1500, // Let's make it 1.5s so it's visible
-            from: NaN
-        },
-        y: {
-            type: 'number',
-            easing: 'easeOutQuint',
-            duration: 1500,
-            from(ctx) {
-                // This forces the line to start from the bottom axis
-                return ctx.chart.scales.y.getPixelForValue(ctx.chart.scales.y.min);
+                responsive: true,
+                maintainAspectRatio: false,
+                animations: {
+                    x: {
+                        type: 'number',
+                        easing: 'easeOutQuint',
+                        duration: 1500, // Let's make it 1.5s so it's visible
+                        from: NaN
+                    },
+                    y: {
+                        type: 'number',
+                        easing: 'easeOutQuint',
+                        duration: 1500,
+                        from(ctx) {
+                            // This forces the line to start from the bottom axis
+                            return ctx.chart.scales.y.getPixelForValue(ctx.chart.scales.y.min);
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        suggestedMin: 15,
+                        suggestedMax: 35
+                    }
+                }
             }
-        }
-    },
-    scales: { 
-        y: {
-            beginAtZero: false,
-            suggestedMin: 15,
-            suggestedMax: 35
-        }
-    }
-}
         });
         window.myBmiChart.update();
     }, 100); // 100ms delay is usually enough to let the browser render the 'div'
 }
 async function exportJSON() {
     const currentUserId = sessionStorage.getItem("current_user_id");
-    
+
     try {
         // We use your actual API_PROD_URL and your security headers!
         const response = await fetch(`${API_PROD_URL}/records`, {
@@ -460,29 +467,38 @@ async function exportJSON() {
                 "Content-Type": "application/json",
                 "x-user-id": currentUserId
             }
-        }); 
-        
+        });
+
         const data = await response.json();
 
         // Format and create the file
         const jsonString = JSON.stringify(data, null, 2);
-        const blob = new Blob([jsonString], { type: "application/json" });
+        const blob = new Blob([jsonString], {
+            type: "application/json"
+        });
 
         // Trigger the download
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = "My_HealthTrack_History.json"; 
-        
+        a.download = "My_HealthTrack_History.json";
+
         document.body.appendChild(a);
         a.click();
 
         // Clean up
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-        
+
     } catch (error) {
         console.error("Export failed:", error);
         alert("Failed to export data.");
     }
+}
+// This is just a sample script. Paste your real code (javascript or HTML) here.
+
+if ('this_is' == /an_example/) {
+    of_beautifier();
+} else {
+    var a = b ? (c % d) : e[f];
 }
