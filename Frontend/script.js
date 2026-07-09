@@ -372,81 +372,84 @@ function switchTab(tabId) {
     if (selectedTab) selectedTab.classList.add("active");
 
     // 5. If they open Records or Trends, pull fresh data!
-    if (tabId === 'records' || tabId === 'trends') {
-        if (typeof fetchUserRecords === "function") {
-            fetchUserRecords(); 
-        }
+// 5. If they open Records or Trends, pull fresh data!
+if (tabId === 'records' || tabId === 'trends') {
+    if (typeof fetchUserRecords === "function") {
+        // We modify this to ensure the chart renders AFTER the data is ready
+        fetchUserRecords().then(data => {
+            if (tabId === 'trends') {
+                renderChart(data); // Pass the data directly!
+            }
+        });
     }
-}
+}}
 // Variable to keep track of the chart so we can update it without glitches
 let myBmiChart = null;
 
 function renderChart(records) {
     const ctx = document.getElementById('bmiChart').getContext('2d');
     
-    // Sort records by date so the graph flows left to right chronologically
+    // Sort records chronologically
     const sortedRecords = [...records].sort((a, b) => new Date(a.date) - new Date(b.date));
-
-    // Extract the labels (X-axis) and data points (Y-axis)
     const dates = sortedRecords.map(r => r.date);
     const bmis = sortedRecords.map(r => r.bmi);
 
-    // Destroy the old chart if it exists before drawing a new one
-    if (myBmiChart) {
-        myBmiChart.destroy();
+    // Destroy existing chart to trigger fresh animation
+    if (window.myBmiChart instanceof Chart) {
+        window.myBmiChart.destroy();
     }
 
-    // Paint the new chart
-    myBmiChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: dates,
-            datasets: [{
-                label: 'Your BMI',
-                data: bmis,
-                borderColor: '#06b6d4',          // Your vibrant Cyan
-                backgroundColor: 'rgba(6, 182, 212, 0.15)', // Light Cyan fill with a nice glow
-                borderWidth: 3,
-                pointBackgroundColor: '#00759A', // Your Deep Ocean blue for the points
-                pointRadius: 5,
-                fill: true,
-                tension: 0.3 // Makes the line slightly curved and smooth
-            }]
-        },
-        options: {
-    animations: {
-        x: {
-            type: 'number',
-            easing: 'easeOutQuint', // Much smoother, more "expensive" feel
-            duration: 1000,         // Fast, punchy 1s duration
-            from: NaN
-        },
-        y: {
-            type: 'number',
-            easing: 'easeOutQuint',
-            duration: 1000,
-            from(ctx) {
-            // This ensures the line starts from the baseline (bottom)
-            return ctx.chart.scales.y.getPixelForValue(0); 
-            }
-        },
-        // Adding an opacity fade for that "premium glow" effect
-        active: {
-            duration: 400,
-            easing: 'easeOutQuad'
-        }
-    },
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: false,
-                    suggestedMin: 15, // Keeps the graph focused on normal BMI ranges
-                    suggestedMax: 35
+    // Delay chart creation slightly to ensure tab visibility
+    setTimeout(() => {
+        window.myBmiChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [{
+                    label: 'Your BMI',
+                    data: bmis,
+                    borderColor: '#06b6d4',
+                    backgroundColor: 'rgba(6, 182, 212, 0.15)',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#00759A',
+                    pointRadius: 5,
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: {
+                    duration: 1000,
+                    easing: 'easeOutQuint'
+                },
+                animations: {
+                    x: {
+                        type: 'number',
+                        easing: 'easeOutQuint',
+                        duration: 1000,
+                        from: NaN
+                    },
+                    y: {
+                        type: 'number',
+                        easing: 'easeOutQuint',
+                        duration: 1000,
+                        from(ctx) {
+                            return ctx.chart.scales.y.getPixelForValue(0);
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        suggestedMin: 15,
+                        suggestedMax: 35
+                    }
                 }
             }
-        }
-    });
+        });
+    }, 100); // 100ms delay is usually enough to let the browser render the 'div'
 }
 async function exportJSON() {
     const currentUserId = sessionStorage.getItem("current_user_id");
