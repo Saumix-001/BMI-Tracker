@@ -418,37 +418,35 @@ function renderChart(records) {
                 }]
             },
             options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                animation: {
-                    duration: 1000,
-                    easing: 'easeOutQuint'
-                },
-                animations: {
-                    x: {
-                        type: 'number',
-                        easing: 'easeOutQuint',
-                        duration: 1000,
-                        from: NaN
-                    },
-                    y: {
-                        type: 'number',
-                        easing: 'easeOutQuint',
-                        duration: 1000,
-                        from(ctx) {
-                            return ctx.chart.scales.y.getPixelForValue(0);
-                        }
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: false,
-                        suggestedMin: 15,
-                        suggestedMax: 35
-                    }
-                }
+    responsive: true,
+    maintainAspectRatio: false,
+    animations: {
+        x: {
+            type: 'number',
+            easing: 'easeOutQuint',
+            duration: 1500, // Let's make it 1.5s so it's visible
+            from: NaN
+        },
+        y: {
+            type: 'number',
+            easing: 'easeOutQuint',
+            duration: 1500,
+            from(ctx) {
+                // This forces the line to start from the bottom axis
+                return ctx.chart.scales.y.getPixelForValue(ctx.chart.scales.y.min);
             }
+        }
+    },
+    scales: { 
+        y: {
+            beginAtZero: false,
+            suggestedMin: 15,
+            suggestedMax: 35
+        }
+    }
+}
         });
+        window.myBmiChart.update();
     }, 100); // 100ms delay is usually enough to let the browser render the 'div'
 }
 async function exportJSON() {
