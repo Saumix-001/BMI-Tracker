@@ -415,30 +415,21 @@ function renderChart(records) {
         },
         options: {
             animations: {
-                x: {
-                    type: 'number',
-                    easing: 'linear',
-                    duration: 2500,
-                    from: NaN,
-                    delay(ctx) {
-                        return ctx.index * 100;
-                    }
-                },
-                y: {
-                    type: 'number',
-                    easing: 'linear',
-                    duration: 0
-                }
-            },
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: false,
-                    suggestedMin: 15, // Keeps the graph focused on normal BMI ranges
-                    suggestedMax: 35
-                }
-            }
+    x: {
+        type: 'number',
+        easing: 'linear',
+        duration: 2500,
+        from: NaN,
+        delay(ctx) {
+            return ctx.index * 100;
+        }
+    },
+    y: {
+        type: 'number',
+        easing: 'linear',
+        duration: 0
+    }
+}
         }
     });
 }
