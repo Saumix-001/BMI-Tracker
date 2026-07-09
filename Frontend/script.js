@@ -360,6 +360,10 @@ function switchTab(tabId) {
         if (roomElement) {
             roomElement.style.display = "none";
         }
+        // Add this inside your switchTab function alongside 'dash', 'calc', etc.
+        if (tabId === 'profile') {
+        document.getElementById('view-profile').style.display = 'block';
+        }
     });
 
     // 3. Safely turn off all buttons (only if they exist!)

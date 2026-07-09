@@ -976,6 +976,28 @@
                     <div id="recordsGrid" class="records-grid"></div>
                 </div>
             </div>
+          <div id="view-profile" class="view-page" style="display: none; max-width: 600px; margin: 0 auto;">    
+              <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px;">
+                <h2 style="color: #004A61; margin-top: 0; margin-bottom: 20px; font-weight: 700;">Account Profile</h2>
+                <div style="background: #f8fafc; padding: 12px 20px; border-radius: 8px; margin-bottom: 25px; border: 1px solid #e2e8f0; color: #475569; font-size: 14px;">
+                    <span style="font-weight: 600; color: #06b6d4;">✨ Logged in as:</span> user@example.com
+                </div>
+
+          <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px;">
+              <div>
+                <label style="display: block; font-size: 12px; font-weight: 600; color: #64748b; margin-bottom: 5px; text-transform: uppercase;">Full Name</label>
+                <input type="text" id="profileName" class="form-input" placeholder="Your Name" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px;">
+              </div>
+              <div>
+                <label style="display: block; font-size: 12px; font-weight: 600; color: #64748b; margin-bottom: 5px; text-transform: uppercase;">Target BMI (Optional)</label>
+                <input type="number" id="profileTargetBmi" class="form-input" placeholder="e.g. 22.5" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px;">
+             </div>
+          </div>
+
+        <button class="save-changes" style="background: #00759A; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; cursor: pointer; width: 100%;">Save Changes</button>
+    </div>
+
+    </div>
             <div id="view-trends" class="view-page" style="display: none;">
                 <div class="box">
                     <h2>BMI Progression Chart</h2>
